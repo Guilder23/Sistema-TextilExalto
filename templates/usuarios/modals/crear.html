@@ -1,0 +1,30 @@
+<div class="modal fade" id="modalCrear" tabindex="-1" aria-labelledby="modalCrearLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <form class="modal-content" method="post" action="{% url 'usuarios:crear' %}" id="formCrear" novalidate>
+      {% csrf_token %}
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalCrearLabel"><i class="bi bi-person-plus me-2"></i>Nuevo usuario</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-md-6"><label class="form-label" for="crearUsername">Usuario *</label><input class="form-control" id="crearUsername" name="username" required maxlength="150"></div>
+          <div class="col-md-6"><label class="form-label" for="crearRol">Rol *</label>
+            <select class="form-select" id="crearRol" name="rol" required><option value="vendedor">Vendedor</option><option value="admin">Administrador</option></select></div>
+          <div class="col-md-6"><label class="form-label" for="crearNombre">Nombres</label><input class="form-control" id="crearNombre" name="first_name" maxlength="150"></div>
+          <div class="col-md-6"><label class="form-label" for="crearApellido">Apellidos</label><input class="form-control" id="crearApellido" name="last_name" maxlength="150"></div>
+          <div class="col-md-6"><label class="form-label" for="crearEmail">Correo</label><input type="email" class="form-control" id="crearEmail" name="email"></div>
+          <div class="col-md-6"><label class="form-label" for="crearTelefono">Teléfono</label><input class="form-control" id="crearTelefono" name="telefono" maxlength="20"></div>
+          <div class="col-md-6"><label class="form-label" for="crearPassword">Contraseña *</label><input type="password" class="form-control" id="crearPassword" name="password" required autocomplete="new-password"></div>
+          <div class="col-md-6"><label class="form-label" for="crearPassword2">Confirmar contraseña *</label><input type="password" class="form-control" id="crearPassword2" name="password2" required autocomplete="new-password">
+            <div class="invalid-feedback">Las contraseñas no coinciden.</div></div>
+          <div class="col-12"><div class="form-check form-switch"><input class="form-check-input" type="checkbox" id="crearActivo" name="is_active" checked><label class="form-check-label" for="crearActivo">Usuario activo</label></div></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg me-1"></i>Guardar</button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,17 @@
+<aside class="app-sidebar" id="appSidebar">
+  <div class="sidebar-section">Principal</div>
+  <a class="sidebar-link {% if request.resolver_match.url_name == 'inicio' %}active{% endif %}" href="{% url 'usuarios:inicio' %}"><i class="bi bi-speedometer2"></i><span>Inicio</span></a>
+
+  <div class="sidebar-section">Inventario</div>
+  <a class="sidebar-link disabled" href="#"><i class="bi bi-box"></i><span>Materiales</span><small>Pronto</small></a>
+  <a class="sidebar-link disabled" href="#"><i class="bi bi-tags"></i><span>Categorías</span><small>Pronto</small></a>
+  <a class="sidebar-link disabled" href="#"><i class="bi bi-box-arrow-in-down"></i><span>Entradas</span><small>Pronto</small></a>
+  <a class="sidebar-link disabled" href="#"><i class="bi bi-box-arrow-up"></i><span>Salidas</span><small>Pronto</small></a>
+  <a class="sidebar-link disabled" href="#"><i class="bi bi-clock-history"></i><span>Historial</span><small>Pronto</small></a>
+  <a class="sidebar-link disabled" href="#"><i class="bi bi-file-earmark-bar-graph"></i><span>Reportes</span><small>Pronto</small></a>
+
+  {% if user.es_admin %}
+  <div class="sidebar-section">Administración</div>
+  <a class="sidebar-link {% if request.resolver_match.url_name == 'lista' %}active{% endif %}" href="{% url 'usuarios:lista' %}"><i class="bi bi-people"></i><span>Usuarios</span></a>
+  {% endif %}
+</aside>

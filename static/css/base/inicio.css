@@ -1,0 +1,14 @@
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: #fff;
+  border-radius: 14px;
+  padding: 1.25rem;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, .08);
+  transition: transform .15s, box-shadow .15s;
+}
+.stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(15, 23, 42, .1); }
+.stat-icon { width: 52px; height: 52px; border-radius: 12px; display: grid; place-items: center; font-size: 1.5rem; }
+.stat-value { font-size: 1.75rem; font-weight: 700; line-height: 1; }
+.stat-label { color: #64748b; font-size: .9rem; margin-top: .25rem; }

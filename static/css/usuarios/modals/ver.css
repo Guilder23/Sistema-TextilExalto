@@ -1,0 +1,11 @@
+#modalVer .modal-title i { color: var(--brand); }
+#modalVer .ver-cabecera { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem; padding-bottom: 1rem; border-bottom: 1px solid #eef2f7; }
+#modalVer .ver-avatar {
+  width: 60px; height: 60px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: linear-gradient(135deg, var(--brand), #7c3aed);
+  color: #fff; font-size: 1.5rem; font-weight: 700;
+}
+#modalVer .ver-nombre { font-size: 1.15rem; font-weight: 600; }
+#modalVer .ver-datos dt { color: #64748b; font-weight: 500; }
+#modalVer .ver-datos dd { margin-bottom: .6rem; }

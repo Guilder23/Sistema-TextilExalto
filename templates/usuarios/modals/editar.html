@@ -1,0 +1,31 @@
+<div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <form class="modal-content" method="post" action="" id="formEditar" novalidate>
+      {% csrf_token %}
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalEditarLabel"><i class="bi bi-pencil-square me-2"></i>Editar usuario</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-md-6"><label class="form-label" for="editarUsername">Usuario *</label><input class="form-control" id="editarUsername" name="username" required maxlength="150"></div>
+          <div class="col-md-6"><label class="form-label" for="editarRol">Rol *</label>
+            <select class="form-select" id="editarRol" name="rol" required><option value="vendedor">Vendedor</option><option value="admin">Administrador</option></select></div>
+          <div class="col-md-6"><label class="form-label" for="editarNombre">Nombres</label><input class="form-control" id="editarNombre" name="first_name" maxlength="150"></div>
+          <div class="col-md-6"><label class="form-label" for="editarApellido">Apellidos</label><input class="form-control" id="editarApellido" name="last_name" maxlength="150"></div>
+          <div class="col-md-6"><label class="form-label" for="editarEmail">Correo</label><input type="email" class="form-control" id="editarEmail" name="email"></div>
+          <div class="col-md-6"><label class="form-label" for="editarTelefono">Teléfono</label><input class="form-control" id="editarTelefono" name="telefono" maxlength="20"></div>
+          <div class="col-12"><div class="form-text mb-1">Deja la contraseña en blanco para conservar la actual.</div></div>
+          <div class="col-md-6"><label class="form-label" for="editarPassword">Nueva contraseña</label><input type="password" class="form-control" id="editarPassword" name="password" autocomplete="new-password"></div>
+          <div class="col-md-6"><label class="form-label" for="editarPassword2">Confirmar contraseña</label><input type="password" class="form-control" id="editarPassword2" name="password2" autocomplete="new-password">
+            <div class="invalid-feedback">Las contraseñas no coinciden.</div></div>
+          <div class="col-12"><div class="form-check form-switch"><input class="form-check-input" type="checkbox" id="editarActivo" name="is_active"><label class="form-check-label" for="editarActivo">Usuario activo</label></div></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg me-1"></i>Guardar cambios</button>
+      </div>
+    </form>
+  </div>
+</div>

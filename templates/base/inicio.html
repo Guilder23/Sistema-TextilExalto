@@ -1,0 +1,22 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block titulo %}Inicio{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'css/base/inicio.css' %}">{% endblock %}
+{% block js %}<script src="{% static 'js/base/inicio.js' %}"></script>{% endblock %}
+{% block contenido %}
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Hola, {{ user.first_name|default:user.username }} 👋</h1>
+    <p class="page-subtitle">Bienvenido al sistema de inventario de Textil Exalto.</p>
+  </div>
+</div>
+{% if user.es_admin %}
+<div class="row g-3">
+  <div class="col-md-4"><div class="stat-card"><div class="stat-icon bg-primary-subtle text-primary"><i class="bi bi-people"></i></div><div><div class="stat-value">{{ total_usuarios }}</div><div class="stat-label">Usuarios</div></div></div></div>
+  <div class="col-md-4"><div class="stat-card"><div class="stat-icon bg-danger-subtle text-danger"><i class="bi bi-shield-lock"></i></div><div><div class="stat-value">{{ total_admins }}</div><div class="stat-label">Administradores</div></div></div></div>
+  <div class="col-md-4"><div class="stat-card"><div class="stat-icon bg-success-subtle text-success"><i class="bi bi-bag"></i></div><div><div class="stat-value">{{ total_vendedores }}</div><div class="stat-label">Vendedores</div></div></div></div>
+</div>
+{% else %}
+<div class="card border-0 shadow-sm"><div class="card-body p-4">Tu rol es <strong>Vendedor</strong>. Los módulos de inventario estarán disponibles próximamente.</div></div>
+{% endif %}
+{% endblock %}
