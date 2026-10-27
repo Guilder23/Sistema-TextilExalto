@@ -10,5 +10,6 @@ urlpatterns = [
     path('materiales/', include('apps.materiales.urls')),
     path('entradas/', include('apps.entradas.urls')),
     path('salidas/', include('apps.salidas.urls')),
+    path('historial/', include('apps.historial.urls')),
     path('', include('apps.usuarios.urls')),
 ]

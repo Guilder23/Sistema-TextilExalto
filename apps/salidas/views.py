@@ -9,6 +9,7 @@ from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
+from apps.historial.utils import registrar
 from apps.materiales.models import Material
 from apps.usuarios.views import solo_admin
 
@@ -148,6 +149,7 @@ def crear(request):
                         advertencias.append(f'"{m.nombre}" quedó en nivel {m.nivel_stock} ({m.stock_actual:.2f}).')
     if salida:
         messages.success(request, f'Venta {salida.numero} registrada por {salida.total:.2f}. Existencias actualizadas.')
+        registrar(request, 'salidas', 'crear', f'Registró la venta {salida.numero} (cliente: {salida.cliente}, total: {salida.total:.2f}).')
         for a in advertencias:
             messages.warning(request, a)
     for e in errores:
@@ -173,4 +175,5 @@ def anular(request, pk):
         salida.estado = Salida.ANULADA
         salida.save(update_fields=['estado'])
     messages.success(request, f'Venta {salida.numero} anulada. Existencias devueltas.')
+    registrar(request, 'salidas', 'anular', f'Anuló la venta {salida.numero}.')
     return redirect('salidas:lista')

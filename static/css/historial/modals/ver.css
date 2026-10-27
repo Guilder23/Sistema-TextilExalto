@@ -1,0 +1,3 @@
+/* Los datos del detalle se muestran con estilos globales de modales. */
+#modalVer .ver-datos dt { color: #64748b; font-weight: 500; }
+#modalVer .ver-datos dd { margin-bottom: .5rem; }

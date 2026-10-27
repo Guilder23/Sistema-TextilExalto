@@ -1,0 +1,145 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block titulo %}Historial{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/historial/lista.css' %}">
+<link rel="stylesheet" href="{% static 'css/historial/modals/ver.css' %}">
+{% endblock %}
+{% block contenido %}
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Historial</h1>
+    <p class="page-subtitle">
+      {% if user.es_admin %}Consulta los movimientos de todos los usuarios y la bitácora de actividad (RF-09).
+      {% else %}Consulta tus propias entradas y salidas registradas (RF-09).{% endif %}
+    </p>
+  </div>
+</div>
+
+{% if user.es_admin %}
+<ul class="nav nav-pills mb-3">
+  <li class="nav-item"><a class="nav-link {% if vista == 'movimientos' %}active{% endif %}" href="?vista=movimientos"><i class="bi bi-arrow-left-right me-1"></i>Movimientos</a></li>
+  <li class="nav-item"><a class="nav-link {% if vista == 'actividad' %}active{% endif %}" href="?vista=actividad"><i class="bi bi-terminal me-1"></i>Registro de actividad (log)</a></li>
+</ul>
+{% endif %}
+
+<div class="card border-0 shadow-sm">
+  <div class="card-body">
+    <form method="get" class="row g-2 mb-3">
+      <input type="hidden" name="vista" value="{{ vista }}">
+      <div class="col-lg-3">
+        <div class="input-group">
+          <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+          <input type="search" name="q" value="{{ q }}" class="form-control" placeholder="{% if vista == 'actividad' %}Descripción, usuario o IP{% else %}Número, cliente o proveedor{% endif %}">
+        </div>
+      </div>
+      {% if vista == 'movimientos' %}
+      <div class="col-lg-2 col-md-6">
+        <select name="tipo" class="form-select">
+          <option value="">Entradas y salidas</option>
+          <option value="entrada" {% if tipo_filtro == 'entrada' %}selected{% endif %}>Solo entradas</option>
+          <option value="salida" {% if tipo_filtro == 'salida' %}selected{% endif %}>Solo salidas</option>
+        </select>
+      </div>
+      {% else %}
+      <div class="col-lg-2 col-md-6">
+        <select name="modulo" class="form-select">
+          <option value="">Todos los módulos</option>
+          {% for v, e in modulos %}<option value="{{ v }}" {% if modulo_filtro == v %}selected{% endif %}>{{ e }}</option>{% endfor %}
+        </select>
+      </div>
+      <div class="col-lg-2 col-md-6">
+        <select name="accion" class="form-select">
+          <option value="">Todas las acciones</option>
+          {% for v, e in acciones %}<option value="{{ v }}" {% if accion_filtro == v %}selected{% endif %}>{{ e }}</option>{% endfor %}
+        </select>
+      </div>
+      {% endif %}
+      {% if user.es_admin %}
+      <div class="col-lg-2 col-md-6">
+        <select name="usuario" class="form-select">
+          <option value="">Todos los usuarios</option>
+          {% for u in usuarios %}<option value="{{ u.pk }}" {% if usuario_filtro == u.pk|stringformat:'s' %}selected{% endif %}>{{ u.username }}</option>{% endfor %}
+        </select>
+      </div>
+      {% endif %}
+      {% if vista == 'movimientos' %}
+      <div class="col-lg-1 col-md-6">
+        <select name="estado" class="form-select">
+          <option value="">Todos</option>
+          <option value="confirmada" {% if estado_filtro == 'confirmada' %}selected{% endif %}>Confirm.</option>
+          <option value="anulada" {% if estado_filtro == 'anulada' %}selected{% endif %}>Anuladas</option>
+        </select>
+      </div>
+      {% endif %}
+      <div class="col-lg-2 col-md-6"><input type="date" name="desde" value="{{ desde }}" class="form-control" title="Desde"></div>
+      <div class="col-lg-2 col-md-6"><input type="date" name="hasta" value="{{ hasta }}" class="form-control" title="Hasta"></div>
+      <div class="col-lg-2 d-flex gap-2">
+        <button class="btn btn-outline-primary flex-fill" type="submit">Filtrar</button>
+        <a class="btn btn-outline-secondary" href="?vista={{ vista }}" title="Limpiar"><i class="bi bi-x-lg"></i></a>
+      </div>
+    </form>
+
+    {% if vista == 'movimientos' %}
+    <div class="table-responsive">
+      <table class="table table-hover align-middle tabla-historial mb-0">
+        <thead><tr><th>Tipo</th><th>Número</th><th>Fecha</th><th>Cliente / Proveedor</th><th class="text-end">Ítems</th><th class="text-end">Total</th>{% if user.es_admin %}<th>Usuario</th>{% endif %}<th>Estado</th><th class="text-end">Ver</th></tr></thead>
+        <tbody>
+          {% for m in pagina %}
+          <tr data-tipo="{{ m.tipo }}" data-numero="{{ m.numero }}" data-fecha="{{ m.fecha|date:'d/m/Y' }}"
+              data-tercero="{{ m.tercero }}" data-documento="{{ m.documento }}" data-pago="{{ m.pago }}"
+              data-observaciones="{{ m.observaciones }}" data-usuario="{{ m.usuario.get_full_name|default:m.usuario.username }}"
+              data-estado="{{ m.estado_texto }}" data-subtotal="{{ m.subtotal|floatformat:2 }}"
+              data-descuento="{{ m.descuento|floatformat:2 }}" data-total="{{ m.total|floatformat:2 }}"
+              data-detalle="{{ m.detalle_json }}">
+            <td>{% if m.tipo == 'entrada' %}<span class="badge text-bg-primary-subtle text-primary-emphasis"><i class="bi bi-box-arrow-in-down me-1"></i>Entrada</span>{% else %}<span class="badge text-bg-warning-subtle text-warning-emphasis"><i class="bi bi-cart-check me-1"></i>Salida</span>{% endif %}</td>
+            <td><code>{{ m.numero }}</code></td>
+            <td>{{ m.fecha|date:'d/m/Y' }}</td>
+            <td>{{ m.tercero }}</td>
+            <td class="text-end">{{ m.items }}</td>
+            <td class="text-end fw-semibold">{{ m.total|floatformat:2 }}</td>
+            {% if user.es_admin %}<td>{{ m.usuario.username }}</td>{% endif %}
+            <td>{% if m.estado == 'confirmada' %}<span class="badge text-bg-success-subtle text-success-emphasis">Confirmada</span>{% else %}<span class="badge text-bg-secondary">Anulada</span>{% endif %}</td>
+            <td class="text-end"><button class="btn btn-sm btn-light btn-ver" title="Ver"><i class="bi bi-eye"></i></button></td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="9" class="text-center text-muted py-5"><i class="bi bi-clock-history fs-1 d-block mb-2"></i>No hay movimientos para mostrar.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <div class="log-consola">
+      {% for r in pagina %}
+      <div class="log-linea log-{{ r.accion }}">
+        <span class="log-fecha">{{ r.fecha|date:'d/m/Y H:i:s' }}</span>
+        <span class="log-nivel">{{ r.get_accion_display }}</span>
+        <span class="log-modulo">[{{ r.get_modulo_display }}]</span>
+        <span class="log-usuario">{{ r.username|default:'—' }}</span>
+        <span class="log-desc">{{ r.descripcion }}</span>
+        {% if r.ip %}<span class="log-ip">{{ r.ip }}</span>{% endif %}
+      </div>
+      {% empty %}
+      <div class="log-vacio">Sin registros de actividad.</div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if pagina.paginator.num_pages > 1 %}
+    <nav class="mt-3 d-flex justify-content-between align-items-center">
+      <small class="text-muted">{{ pagina.paginator.count }} registros · página {{ pagina.number }} de {{ pagina.paginator.num_pages }}</small>
+      <ul class="pagination pagination-sm mb-0">
+        {% if pagina.has_previous %}<li class="page-item"><a class="page-link" href="?{{ query_string }}&page={{ pagina.previous_page_number }}">Anterior</a></li>{% endif %}
+        {% if pagina.has_next %}<li class="page-item"><a class="page-link" href="?{{ query_string }}&page={{ pagina.next_page_number }}">Siguiente</a></li>{% endif %}
+      </ul>
+    </nav>
+    {% endif %}
+  </div>
+</div>
+
+{% if vista == 'movimientos' %}{% include 'historial/modals/ver.html' %}{% endif %}
+{% endblock %}
+{% block js %}
+<script src="{% static 'js/historial/lista.js' %}"></script>
+{% if vista == 'movimientos' %}<script src="{% static 'js/historial/modals/ver.js' %}"></script>{% endif %}
+{% endblock %}

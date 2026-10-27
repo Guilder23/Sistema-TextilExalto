@@ -1,0 +1,26 @@
+.tabla-historial thead th {
+  font-size: .75rem; text-transform: uppercase; letter-spacing: .05em;
+  color: #64748b; background: #f8fafc; border-bottom: 1px solid #e2e8f0; white-space: nowrap;
+}
+.tabla-historial code { color: var(--brand); background: #eef2ff; padding: .15rem .4rem; border-radius: 6px; }
+.tabla-historial .btn-light { background: transparent; border-color: transparent; }
+.tabla-historial .btn-light:hover { background: #eef2ff; }
+
+.log-consola {
+  background: #0f172a; color: #cbd5e1; border-radius: 12px; padding: .75rem;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .82rem;
+  max-height: 65vh; overflow: auto;
+}
+.log-linea { display: flex; flex-wrap: wrap; gap: .25rem .75rem; padding: .3rem .5rem; border-radius: 6px; }
+.log-linea:hover { background: #1e293b; }
+.log-fecha { color: #64748b; }
+.log-nivel { min-width: 8.5rem; font-weight: 600; color: #38bdf8; }
+.log-modulo { color: #a78bfa; }
+.log-usuario { color: #fbbf24; }
+.log-desc { color: #e2e8f0; flex: 1 1 18rem; }
+.log-ip { color: #64748b; }
+.log-crear .log-nivel, .log-login .log-nivel { color: #4ade80; }
+.log-editar .log-nivel { color: #38bdf8; }
+.log-eliminar .log-nivel, .log-anular .log-nivel, .log-login_fallido .log-nivel { color: #f87171; }
+.log-logout .log-nivel { color: #94a3b8; }
+.log-vacio { padding: 2rem; text-align: center; color: #64748b; }

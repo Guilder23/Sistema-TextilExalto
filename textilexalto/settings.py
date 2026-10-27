@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'apps.materiales',
     'apps.entradas',
     'apps.salidas',
+    'apps.historial',
 ]
 
 MIDDLEWARE = [

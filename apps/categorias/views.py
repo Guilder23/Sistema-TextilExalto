@@ -1,4 +1,6 @@
 from django.contrib import messages
+
+from apps.historial.utils import registrar
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Q
 from django.db.models.deletion import ProtectedError
@@ -46,6 +48,7 @@ def crear(request):
         _asignar(categoria, request.POST)
         categoria.save()
         messages.success(request, f'Categoría "{categoria.nombre}" creada.')
+        registrar(request, 'categorias', 'crear', f'Creó la categoría "{categoria.nombre}".')
     return redirect('categorias:lista')
 
 
@@ -61,6 +64,7 @@ def editar(request, pk):
         _asignar(categoria, request.POST)
         categoria.save()
         messages.success(request, f'Categoría "{categoria.nombre}" actualizada.')
+        registrar(request, 'categorias', 'editar', f'Editó la categoría "{categoria.nombre}".')
     return redirect('categorias:lista')
 
 
@@ -71,6 +75,7 @@ def eliminar(request, pk):
     try:
         categoria.delete()
         messages.success(request, f'Categoría "{categoria.nombre}" eliminada.')
+        registrar(request, 'categorias', 'eliminar', f'Eliminó la categoría "{categoria.nombre}".')
     except ProtectedError:
         messages.error(request, 'No se puede eliminar: tiene materiales asociados. Desactívala en su lugar.')
     return redirect('categorias:lista')

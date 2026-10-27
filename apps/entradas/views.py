@@ -8,6 +8,7 @@ from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
+from apps.historial.utils import registrar
 from apps.materiales.models import Material
 from apps.usuarios.views import solo_admin
 
@@ -121,6 +122,7 @@ def crear(request):
                     material.costo_compra = costo_u
                     material.save(update_fields=['stock_actual', 'costo_compra', 'actualizado'])
                 messages.success(request, f'Entrada {entrada.numero} registrada. Existencias actualizadas.')
+                registrar(request, 'entradas', 'crear', f'Registró la entrada {entrada.numero} (proveedor: {entrada.proveedor}).')
     for e in errores:
         messages.error(request, e)
     return redirect('entradas:lista')
@@ -148,4 +150,5 @@ def anular(request, pk):
         entrada.estado = Entrada.ANULADA
         entrada.save(update_fields=['estado'])
     messages.success(request, f'Entrada {entrada.numero} anulada. Existencias revertidas.')
+    registrar(request, 'entradas', 'anular', f'Anuló la entrada {entrada.numero}.')
     return redirect('entradas:lista')

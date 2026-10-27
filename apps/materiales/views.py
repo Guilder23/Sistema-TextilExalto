@@ -1,6 +1,8 @@
 from decimal import Decimal, InvalidOperation
 
 from django.contrib import messages
+
+from apps.historial.utils import registrar
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.db.models import F, Q
@@ -101,6 +103,8 @@ def _guardar(request, material, mensaje):
             messages.error(request, e)
     else:
         messages.success(request, f'Material "{material.nombre}" {mensaje}.')
+        accion = 'crear' if mensaje == 'registrado' else 'editar'
+        registrar(request, 'materiales', accion, f'Material "{material.nombre}" ({material.codigo}) {mensaje}.')
     return redirect('materiales:lista')
 
 
@@ -123,6 +127,7 @@ def eliminar(request, pk):
     try:
         material.delete()
         messages.success(request, f'Material "{material.nombre}" eliminado.')
+        registrar(request, 'materiales', 'eliminar', f'Material "{material.nombre}" ({material.codigo}) eliminado.')
     except ProtectedError:
         messages.error(request, 'No se puede eliminar: tiene movimientos asociados. Desactívalo en su lugar.')
     return redirect('materiales:lista')

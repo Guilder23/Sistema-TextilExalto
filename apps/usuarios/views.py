@@ -1,6 +1,8 @@
 from functools import wraps
 
 from django.contrib import messages
+
+from apps.historial.utils import registrar
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import PermissionDenied, ValidationError
@@ -95,6 +97,7 @@ def crear(request):
         _asignar(usuario, request.POST)
         usuario.save()
         messages.success(request, f'Usuario "{usuario.username}" creado.')
+        registrar(request, 'usuarios', 'crear', f'Creó el usuario "{usuario.username}" ({usuario.get_rol_display()}).')
     return redirect('usuarios:lista')
 
 
@@ -113,6 +116,7 @@ def editar(request, pk):
         _asignar(usuario, request.POST)
         usuario.save()
         messages.success(request, f'Usuario "{usuario.username}" actualizado.')
+        registrar(request, 'usuarios', 'editar', f'Editó el usuario "{usuario.username}".')
     return redirect('usuarios:lista')
 
 
@@ -125,4 +129,5 @@ def eliminar(request, pk):
     else:
         usuario.delete()
         messages.success(request, f'Usuario "{usuario.username}" eliminado.')
+        registrar(request, 'usuarios', 'eliminar', f'Eliminó el usuario "{usuario.username}".')
     return redirect('usuarios:lista')
