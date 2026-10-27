@@ -11,5 +11,7 @@ urlpatterns = [
     path('entradas/', include('apps.entradas.urls')),
     path('salidas/', include('apps.salidas.urls')),
     path('historial/', include('apps.historial.urls')),
+    path('reportes/', include('apps.reportes.urls')),
     path('', include('apps.usuarios.urls')),
 ]
+

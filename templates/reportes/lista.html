@@ -1,0 +1,47 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block titulo %}Reportes{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/reportes/lista.css' %}">
+{% endblock %}
+{% block contenido %}
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Reportes</h1>
+    <p class="page-subtitle">Consulta y descarga información del inventario y de las salidas / ventas.</p>
+  </div>
+</div>
+<ul class="nav nav-pills report-tabs mb-3">
+  <li class="nav-item"><a class="nav-link {% if tab == 'materiales' %}active{% endif %}" href="?tab=materiales"><i class="bi bi-box-seam me-1"></i>Reporte de materiales</a></li>
+  <li class="nav-item"><a class="nav-link {% if tab == 'ventas' %}active{% endif %}" href="?tab=ventas"><i class="bi bi-cart-check me-1"></i>Reporte de salidas / ventas</a></li>
+</ul>
+<div class="card border-0 shadow-sm">
+  <div class="card-body">
+    {% if tab == 'materiales' %}
+    <div class="d-flex justify-content-between align-items-center gap-2 mb-3 flex-wrap">
+      <div><h5 class="mb-1">Existencias y precios</h5><p class="text-muted small mb-0">Stock actual, niveles configurados y valoración a costo de compra.</p></div>
+      <a class="btn btn-primary" href="{% url 'reportes:pdf_materiales' %}{% if request.GET.urlencode %}?{{ request.GET.urlencode }}{% endif %}"><i class="bi bi-file-earmark-pdf me-1"></i>Descargar PDF</a>
+    </div>
+    <form method="get" class="row g-2 mb-3">
+      <input type="hidden" name="tab" value="materiales">
+      <div class="col-lg-4"><div class="input-group"><span class="input-group-text bg-white"><i class="bi bi-search"></i></span><input name="q" value="{{ filtros.q }}" class="form-control" placeholder="Código, material o categoría"></div></div>
+      <div class="col-lg-2"><select name="nivel" class="form-select"><option value="">Todos los niveles</option>{% for nivel in materiales_niveles %}<option value="{{ nivel }}" {% if filtros.nivel == nivel %}selected{% endif %}>{{ nivel|capfirst }}</option>{% endfor %}</select></div>
+      <div class="col-lg-2"><select name="activo" class="form-select"><option value="">Todos los estados</option><option value="1" {% if filtros.activo == '1' %}selected{% endif %}>Activos</option><option value="0" {% if filtros.activo == '0' %}selected{% endif %}>Inactivos</option></select></div>
+      <div class="col-lg-2"><button class="btn btn-outline-primary w-100">Filtrar</button></div><div class="col-lg-2"><a class="btn btn-outline-secondary w-100" href="?tab=materiales">Limpiar</a></div>
+    </form>
+    <div class="table-responsive"><table class="table table-hover align-middle reporte-table mb-0"><thead><tr><th>Código</th><th>Material</th><th>Categoría</th><th>Unidad</th><th class="text-end">Stock</th><th class="text-end">Costo compra</th><th class="text-end">Precio venta</th><th class="text-end">Valor stock</th><th>Nivel</th></tr></thead><tbody>
+      {% for fila in filas %}<tr><td><code>{{ fila.material.codigo }}</code></td><td><strong>{{ fila.material.nombre }}</strong></td><td>{{ fila.material.categoria.nombre }}</td><td>{{ fila.material.get_unidad_display }}</td><td class="text-end">{{ fila.material.stock_actual|floatformat:2 }}</td><td class="text-end">{{ fila.material.costo_compra|floatformat:2 }}</td><td class="text-end">{{ fila.material.precio_venta|floatformat:2 }}</td><td class="text-end">{{ fila.valor_stock|floatformat:2 }}</td><td><span class="nivel nivel-{{ fila.nivel }}">{{ fila.nivel|capfirst }}</span></td></tr>{% empty %}<tr><td colspan="9" class="text-center text-muted py-5">No hay materiales que coincidan.</td></tr>{% endfor %}
+    </tbody></table></div>
+    {% else %}
+    <div class="d-flex justify-content-between align-items-center gap-2 mb-3 flex-wrap">
+      <div><h5 class="mb-1">Salidas / ventas</h5><p class="text-muted small mb-0">{% if user.es_admin %}Todas las ventas registradas por el equipo.{% else %}Tus ventas registradas.{% endif %}</p></div>
+      <a class="btn btn-primary" href="{% url 'reportes:pdf_ventas' %}{% if request.GET.urlencode %}?{{ request.GET.urlencode }}{% endif %}"><i class="bi bi-file-earmark-pdf me-1"></i>Descargar PDF</a>
+    </div>
+    <div class="row g-3 mb-3"><div class="col-md-4"><div class="metric-card"><span>Registros</span><strong>{{ cantidad_ventas }}</strong></div></div><div class="col-md-4"><div class="metric-card"><span>Confirmadas</span><strong>{{ confirmadas }}</strong></div></div><div class="col-md-4"><div class="metric-card"><span>Total confirmado</span><strong>{{ total_ventas|floatformat:2 }}</strong></div></div></div>
+    <form method="get" class="row g-2 mb-3"><input type="hidden" name="tab" value="ventas"><div class="col-lg-3"><input name="q" value="{{ filtros.q }}" class="form-control" placeholder="Número, cliente o CI/NIT"></div><div class="col-lg-2"><input type="date" name="desde" value="{{ filtros.desde }}" class="form-control"></div><div class="col-lg-2"><input type="date" name="hasta" value="{{ filtros.hasta }}" class="form-control"></div><div class="col-lg-2"><select name="pago" class="form-select"><option value="">Todos los pagos</option>{% for v,e in pagos %}<option value="{{ v }}" {% if filtros.pago == v %}selected{% endif %}>{{ e }}</option>{% endfor %}</select></div><div class="col-lg-2"><select name="estado" class="form-select"><option value="">Todos los estados</option>{% for v,e in estados %}<option value="{{ v }}" {% if filtros.estado == v %}selected{% endif %}>{{ e }}</option>{% endfor %}</select></div><div class="col-lg-1"><button class="btn btn-outline-primary w-100">Filtrar</button></div></form>
+    <div class="table-responsive"><table class="table table-hover align-middle reporte-table mb-0"><thead><tr><th>Número</th><th>Fecha</th><th>Cliente</th><th>Vendedor</th><th>Pago</th><th class="text-end">Ítems</th><th class="text-end">Subtotal</th><th class="text-end">Descuento</th><th class="text-end">Total</th><th>Estado</th></tr></thead><tbody>{% for venta in ventas %}<tr><td><code>{{ venta.numero }}</code></td><td>{{ venta.fecha|date:'d/m/Y' }}</td><td>{{ venta.cliente }}</td><td>{{ venta.usuario.username }}</td><td>{{ venta.get_metodo_pago_display }}</td><td class="text-end">{{ venta.detalles.count }}</td><td class="text-end">{{ venta.subtotal|floatformat:2 }}</td><td class="text-end">{{ venta.descuento|floatformat:2 }}</td><td class="text-end fw-semibold">{{ venta.total|floatformat:2 }}</td><td>{% if venta.estado == 'confirmada' %}<span class="badge text-bg-success-subtle text-success-emphasis">Confirmada</span>{% else %}<span class="badge text-bg-secondary">Anulada</span>{% endif %}</td></tr>{% empty %}<tr><td colspan="10" class="text-center text-muted py-5">No hay ventas que coincidan.</td></tr>{% endfor %}</tbody></table></div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
+{% block js %}<script src="{% static 'js/reportes/lista.js' %}"></script>{% endblock %}

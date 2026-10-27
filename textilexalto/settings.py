@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'apps.entradas',
     'apps.salidas',
     'apps.historial',
+    'apps.reportes',
 ]
 
 MIDDLEWARE = [
@@ -134,4 +135,5 @@ AUTH_USER_MODEL = 'usuarios.Usuario'
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'usuarios:lista'
 LOGOUT_REDIRECT_URL = 'login'
+
 
