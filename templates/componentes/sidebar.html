@@ -6,7 +6,7 @@
   <a class="sidebar-link {% if request.resolver_match.app_name == 'materiales' %}active{% endif %}" href="{% url 'materiales:lista' %}"><i class="bi bi-box"></i><span>Materiales</span></a>
   <a class="sidebar-link {% if request.resolver_match.app_name == 'categorias' %}active{% endif %}" href="{% url 'categorias:lista' %}"><i class="bi bi-tags"></i><span>Categorías</span></a>
   {% if user.es_admin %}<a class="sidebar-link {% if request.resolver_match.app_name == 'entradas' %}active{% endif %}" href="{% url 'entradas:lista' %}"><i class="bi bi-box-arrow-in-down"></i><span>Entradas</span></a>{% else %}<a class="sidebar-link disabled" href="#"><i class="bi bi-box-arrow-in-down"></i><span>Entradas</span></a>{% endif %}
-  <a class="sidebar-link disabled" href="#"><i class="bi bi-box-arrow-up"></i><span>Salidas</span><small>Pronto</small></a>
+  <a class="sidebar-link {% if request.resolver_match.app_name == 'salidas' %}active{% endif %}" href="{% url 'salidas:lista' %}"><i class="bi bi-cart-check"></i><span>Salidas / Ventas</span></a>
   <a class="sidebar-link disabled" href="#"><i class="bi bi-clock-history"></i><span>Historial</span><small>Pronto</small></a>
   <a class="sidebar-link disabled" href="#"><i class="bi bi-file-earmark-bar-graph"></i><span>Reportes</span><small>Pronto</small></a>
 

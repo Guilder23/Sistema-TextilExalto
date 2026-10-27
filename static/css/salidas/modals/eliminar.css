@@ -1,0 +1,5 @@
+#modalEliminar .eliminar-icono {
+  width: 72px; height: 72px; margin: 0 auto 1rem;
+  display: grid; place-items: center;
+  border-radius: 50%; background: #fee2e2; color: #dc2626; font-size: 2rem;
+}

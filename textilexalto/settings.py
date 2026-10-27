@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'apps.categorias',
     'apps.materiales',
     'apps.entradas',
+    'apps.salidas',
 ]
 
 MIDDLEWARE = [

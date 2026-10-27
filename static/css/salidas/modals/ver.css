@@ -1,0 +1,4 @@
+#modalVer .modal-title i { color: var(--brand); }
+#modalVer .ver-datos dt { color: #64748b; font-weight: 500; }
+#modalVer .ver-datos dd { margin-bottom: .5rem; }
+#modalVer thead th { font-size: .75rem; text-transform: uppercase; color: #64748b; }

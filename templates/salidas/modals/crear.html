@@ -1,0 +1,67 @@
+<div class="modal fade" id="modalCrear" tabindex="-1" aria-labelledby="modalCrearLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+    <form class="modal-content" method="post" action="{% url 'salidas:crear' %}" id="formCrear" novalidate>
+      {% csrf_token %}
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalCrearLabel"><i class="bi bi-cart-check me-2"></i>Nueva venta</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <h6 class="seccion-titulo">Datos de la venta</h6>
+        <div class="row g-3 mb-4">
+          <div class="col-md-3"><label class="form-label" for="crearFecha">Fecha *</label><input type="date" class="form-control" id="crearFecha" name="fecha" value="{{ hoy }}" required></div>
+          <div class="col-md-5"><label class="form-label" for="crearCliente">Cliente *</label><input class="form-control" id="crearCliente" name="cliente" required maxlength="150"></div>
+          <div class="col-md-4"><label class="form-label" for="crearDocumento">CI / NIT</label><input class="form-control" id="crearDocumento" name="documento_cliente" maxlength="30"></div>
+          <div class="col-md-4"><label class="form-label" for="crearTelefono">Teléfono</label><input class="form-control" id="crearTelefono" name="telefono_cliente" maxlength="20"></div>
+          <div class="col-md-4"><label class="form-label" for="crearPago">Método de pago *</label>
+            <select class="form-select" id="crearPago" name="metodo_pago" required>{% for v, e in pagos %}<option value="{{ v }}">{{ e }}</option>{% endfor %}</select></div>
+          <div class="col-md-4"><label class="form-label" for="crearObservaciones">Observaciones</label><input class="form-control" id="crearObservaciones" name="observaciones"></div>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <h6 class="seccion-titulo mb-0">Materiales</h6>
+          <button type="button" class="btn btn-sm btn-outline-primary" id="btnAgregarLinea"><i class="bi bi-plus-lg me-1"></i>Agregar material</button>
+        </div>
+        <div class="table-responsive">
+          <table class="table align-middle tabla-lineas mb-0">
+            <thead><tr><th style="min-width:260px">Material</th><th style="width:130px">Disponible</th><th style="width:160px">Cantidad</th><th style="width:140px">Precio unit.</th><th class="text-end" style="width:120px">Subtotal</th><th style="width:50px"></th></tr></thead>
+            <tbody id="lineas"></tbody>
+          </table>
+        </div>
+        <div class="invalid-feedback d-block" id="errorLineas"></div>
+
+        <div class="row justify-content-end mt-3">
+          <div class="col-md-5 col-lg-4">
+            <dl class="totales mb-0">
+              <div class="d-flex justify-content-between"><dt>Subtotal</dt><dd id="subtotalVenta">0.00</dd></div>
+              <div class="d-flex justify-content-between align-items-center"><dt>Descuento</dt>
+                <dd><input type="number" class="form-control form-control-sm text-end" id="crearDescuento" name="descuento" step="0.01" min="0" value="0"></dd></div>
+              <div class="d-flex justify-content-between total-final"><dt>Total</dt><dd id="totalVenta">0.00</dd></div>
+            </dl>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg me-1"></i>Registrar venta</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<template id="plantillaLinea">
+  <tr class="linea">
+    <td>
+      <select class="form-select linea-material" name="material" required>
+        <option value="">Selecciona...</option>
+        {% for m in materiales %}<option value="{{ m.pk }}" data-precio="{{ m.precio_venta|stringformat:'.2f' }}" data-stock="{{ m.stock_actual|stringformat:'.2f' }}" data-unidad="{{ m.get_unidad_display }}"{% if m.stock_actual <= 0 %} disabled{% endif %}>{{ m.codigo }} - {{ m.nombre }}{% if m.stock_actual <= 0 %} (sin stock){% endif %}</option>{% endfor %}
+      </select>
+    </td>
+    <td class="linea-disponible text-muted">—</td>
+    <td><div class="input-group"><input type="number" class="form-control linea-cantidad" name="cantidad" step="0.01" min="0.01" required><span class="input-group-text linea-unidad">—</span></div>
+      <div class="invalid-feedback">Supera el stock disponible.</div></td>
+    <td><input type="number" class="form-control linea-precio" name="precio" step="0.01" min="0" value="0" required></td>
+    <td class="text-end linea-subtotal">0.00</td>
+    <td class="text-end"><button type="button" class="btn btn-sm btn-light text-danger linea-quitar" title="Quitar"><i class="bi bi-x-lg"></i></button></td>
+  </tr>
+</template>

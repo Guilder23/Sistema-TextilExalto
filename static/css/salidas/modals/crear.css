@@ -1,0 +1,12 @@
+#modalCrear .modal-header { background: linear-gradient(135deg, #fff7ed, #fff); }
+#modalCrear .modal-title i { color: #ea580c; }
+#modalCrear .form-label { font-weight: 500; font-size: .88rem; }
+#modalCrear .seccion-titulo { color: #475569; text-transform: uppercase; font-size: .75rem; letter-spacing: .06em; margin-bottom: .75rem; }
+#modalCrear .tabla-lineas thead th { font-size: .75rem; text-transform: uppercase; letter-spacing: .05em; color: #64748b; background: #f8fafc; }
+#modalCrear .totales { background: #f8fafc; border-radius: 12px; padding: 1rem; }
+#modalCrear .totales dt { font-weight: 500; color: #475569; }
+#modalCrear .totales dd { margin: 0 0 .5rem; }
+#modalCrear .totales .form-control { width: 110px; }
+#modalCrear .total-final { border-top: 1px solid #e2e8f0; padding-top: .6rem; font-size: 1.2rem; }
+#modalCrear .total-final dd { font-weight: 700; margin: 0; }
+#modalCrear .linea-disponible { font-weight: 600; }

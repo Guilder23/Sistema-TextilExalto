@@ -1,0 +1,90 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block titulo %}Salidas / Ventas{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/salidas/lista.css' %}">
+<link rel="stylesheet" href="{% static 'css/salidas/modals/crear.css' %}">
+<link rel="stylesheet" href="{% static 'css/salidas/modals/ver.css' %}">
+<link rel="stylesheet" href="{% static 'css/salidas/modals/eliminar.css' %}">
+{% endblock %}
+{% block contenido %}
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Salidas / Ventas</h1>
+    <p class="page-subtitle">Registra los retiros de materiales como ventas y valida las existencias (RF-06).</p>
+  </div>
+  <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCrear"><i class="bi bi-plus-lg me-1"></i>Nueva venta</button>
+</div>
+
+<div class="card border-0 shadow-sm">
+  <div class="card-body">
+    <form method="get" class="row g-2 mb-3">
+      <div class="col-lg-3">
+        <div class="input-group">
+          <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+          <input type="search" name="q" value="{{ q }}" class="form-control" placeholder="Número, cliente o CI/NIT">
+        </div>
+      </div>
+      <div class="col-lg-2 col-md-6"><input type="date" name="desde" value="{{ desde }}" class="form-control" title="Desde"></div>
+      <div class="col-lg-2 col-md-6"><input type="date" name="hasta" value="{{ hasta }}" class="form-control" title="Hasta"></div>
+      <div class="col-lg-2 col-md-6">
+        <select name="pago" class="form-select">
+          <option value="">Todos los pagos</option>
+          {% for v, e in pagos %}<option value="{{ v }}" {% if pago_filtro == v %}selected{% endif %}>{{ e }}</option>{% endfor %}
+        </select>
+      </div>
+      <div class="col-lg-1 col-md-6">
+        <select name="estado" class="form-select">
+          <option value="">Todas</option>
+          <option value="confirmada" {% if estado_filtro == 'confirmada' %}selected{% endif %}>Confirmadas</option>
+          <option value="anulada" {% if estado_filtro == 'anulada' %}selected{% endif %}>Anuladas</option>
+        </select>
+      </div>
+      <div class="col-lg-2 d-flex gap-2">
+        <button class="btn btn-outline-primary flex-fill" type="submit">Filtrar</button>
+        <a class="btn btn-outline-secondary" href="{% url 'salidas:lista' %}" title="Limpiar"><i class="bi bi-x-lg"></i></a>
+      </div>
+    </form>
+    <div class="table-responsive">
+      <table class="table table-hover align-middle tabla-salidas mb-0">
+        <thead><tr><th>Número</th><th>Fecha</th><th>Cliente</th><th>Pago</th><th class="text-end">Ítems</th><th class="text-end">Total</th><th>Vendedor</th><th>Estado</th><th class="text-end">Acciones</th></tr></thead>
+        <tbody>
+          {% for s in salidas %}
+          <tr data-numero="{{ s.numero }}" data-fecha="{{ s.fecha|date:'d/m/Y' }}" data-cliente="{{ s.cliente }}"
+              data-documento="{{ s.documento_cliente }}" data-telefono="{{ s.telefono_cliente }}"
+              data-pago="{{ s.get_metodo_pago_display }}" data-observaciones="{{ s.observaciones }}"
+              data-usuario="{{ s.usuario.get_full_name|default:s.usuario.username }}" data-estado="{{ s.get_estado_display }}"
+              data-subtotal="{{ s.subtotal|stringformat:'.2f' }}" data-descuento="{{ s.descuento|stringformat:'.2f' }}" data-total="{{ s.total|stringformat:'.2f' }}"
+              data-detalle="{{ s.detalle_json }}" data-url-anular="{% url 'salidas:anular' s.pk %}">
+            <td><code>{{ s.numero }}</code></td>
+            <td>{{ s.fecha|date:'d/m/Y' }}</td>
+            <td><strong>{{ s.cliente }}</strong>{% if s.documento_cliente %}<div class="small text-muted">{{ s.documento_cliente }}</div>{% endif %}</td>
+            <td>{{ s.get_metodo_pago_display }}</td>
+            <td class="text-end">{{ s.items }}</td>
+            <td class="text-end fw-semibold">{{ s.total|floatformat:2 }}</td>
+            <td>{{ s.usuario.username }}</td>
+            <td>{% if s.estado == 'confirmada' %}<span class="badge text-bg-success-subtle text-success-emphasis">Confirmada</span>{% else %}<span class="badge text-bg-secondary">Anulada</span>{% endif %}</td>
+            <td class="text-end text-nowrap">
+              <button class="btn btn-sm btn-light btn-ver" title="Ver"><i class="bi bi-eye"></i></button>
+              {% if user.es_admin and s.estado == 'confirmada' %}<button class="btn btn-sm btn-light text-danger btn-eliminar" title="Anular"><i class="bi bi-slash-circle"></i></button>{% endif %}
+            </td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="9" class="text-center text-muted py-5"><i class="bi bi-cart fs-1 d-block mb-2"></i>No hay ventas registradas.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+{% include 'salidas/modals/crear.html' %}
+{% include 'salidas/modals/ver.html' %}
+{% if user.es_admin %}{% include 'salidas/modals/eliminar.html' %}{% endif %}
+{% endblock %}
+{% block js %}
+<script src="{% static 'js/salidas/lista.js' %}"></script>
+<script src="{% static 'js/salidas/modals/crear.js' %}"></script>
+<script src="{% static 'js/salidas/modals/ver.js' %}"></script>
+{% if user.es_admin %}<script src="{% static 'js/salidas/modals/eliminar.js' %}"></script>{% endif %}
+{% endblock %}
