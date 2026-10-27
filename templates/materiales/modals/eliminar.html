@@ -1,0 +1,16 @@
+<div class="modal fade" id="modalEliminar" tabindex="-1" aria-labelledby="modalEliminarLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <form class="modal-content" method="post" action="" id="formEliminar">
+      {% csrf_token %}
+      <div class="modal-body text-center p-4">
+        <div class="eliminar-icono"><i class="bi bi-exclamation-triangle"></i></div>
+        <h5 class="mb-2" id="modalEliminarLabel">¿Eliminar material?</h5>
+        <p class="text-muted mb-0">Se eliminará <strong id="eliminarNombre"></strong>. Esta acción no se puede deshacer.</p>
+      </div>
+      <div class="modal-footer justify-content-center border-0 pt-0 pb-4">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-danger"><i class="bi bi-trash me-1"></i>Eliminar</button>
+      </div>
+    </form>
+  </div>
+</div>

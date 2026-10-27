@@ -1,0 +1,33 @@
+<div class="modal fade" id="modalCrear" tabindex="-1" aria-labelledby="modalCrearLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <form class="modal-content" method="post" action="{% url 'materiales:crear' %}" id="formCrear" novalidate>
+      {% csrf_token %}
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalCrearLabel"><i class="bi bi-box-seam me-2"></i>Nuevo material</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-md-4"><label class="form-label" for="crearCodigo">Código *</label><input class="form-control" id="crearCodigo" name="codigo" required maxlength="30"></div>
+          <div class="col-md-8"><label class="form-label" for="crearNombre">Nombre *</label><input class="form-control" id="crearNombre" name="nombre" required maxlength="150"></div>
+          <div class="col-md-6"><label class="form-label" for="crearCategoria">Categoría *</label>
+            <select class="form-select" id="crearCategoria" name="categoria" required>
+              <option value="">Selecciona...</option>
+              {% for c in categorias %}<option value="{{ c.pk }}">{{ c.nombre }}</option>{% endfor %}
+            </select></div>
+          <div class="col-md-6"><label class="form-label" for="crearUnidad">Unidad de medida *</label>
+            <select class="form-select" id="crearUnidad" name="unidad" required>{% for v, e in unidades %}<option value="{{ v }}">{{ e }}</option>{% endfor %}</select></div>
+          <div class="col-md-6"><label class="form-label" for="crearStockMinimo">Stock mínimo</label><input type="number" step="0.01" min="0" class="form-control" id="crearStockMinimo" name="stock_minimo" value="0"></div>
+          <div class="col-md-6"><label class="form-label" for="crearCosto">Costo unitario</label><input type="number" step="0.01" min="0" class="form-control" id="crearCosto" name="costo_unitario" value="0"></div>
+          <div class="col-12"><label class="form-label" for="crearDescripcion">Descripción</label><textarea class="form-control" id="crearDescripcion" name="descripcion" rows="2"></textarea></div>
+          <div class="col-12"><div class="form-check form-switch"><input class="form-check-input" type="checkbox" id="crearActivo" name="activo" checked><label class="form-check-label" for="crearActivo">Material activo</label></div></div>
+        </div>
+        <div class="form-text mt-2">El stock inicial es 0; se actualiza con las entradas y salidas.</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg me-1"></i>Guardar</button>
+      </div>
+    </form>
+  </div>
+</div>

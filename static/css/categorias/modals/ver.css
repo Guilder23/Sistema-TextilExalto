@@ -1,0 +1,4 @@
+#modalVer .modal-title i { color: var(--brand); }
+#modalVer .ver-nombre { font-weight: 600; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid #eef2f7; }
+#modalVer .ver-datos dt { color: #64748b; font-weight: 500; }
+#modalVer .ver-datos dd { margin-bottom: .6rem; }
