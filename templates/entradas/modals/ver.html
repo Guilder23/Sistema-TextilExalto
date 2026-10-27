@@ -1,0 +1,28 @@
+<div class="modal fade" id="modalVer" tabindex="-1" aria-labelledby="modalVerLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalVerLabel"><i class="bi bi-receipt me-2"></i>Entrada <span id="verNumero"></span></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <dl class="row ver-datos">
+          <dt class="col-sm-3">Fecha</dt><dd class="col-sm-9" id="verFecha"></dd>
+          <dt class="col-sm-3">Proveedor</dt><dd class="col-sm-9" id="verProveedor"></dd>
+          <dt class="col-sm-3">Documento</dt><dd class="col-sm-9" id="verDocumento"></dd>
+          <dt class="col-sm-3">Registró</dt><dd class="col-sm-9" id="verUsuario"></dd>
+          <dt class="col-sm-3">Estado</dt><dd class="col-sm-9" id="verEstado"></dd>
+          <dt class="col-sm-3">Observaciones</dt><dd class="col-sm-9" id="verObservaciones"></dd>
+        </dl>
+        <div class="table-responsive">
+          <table class="table table-sm align-middle mb-0">
+            <thead><tr><th>Código</th><th>Material</th><th class="text-end">Cantidad</th><th class="text-end">Costo</th><th class="text-end">Subtotal</th></tr></thead>
+            <tbody id="verDetalle"></tbody>
+            <tfoot><tr><td colspan="4" class="text-end fw-semibold">Total</td><td class="text-end fw-bold" id="verTotal"></td></tr></tfoot>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer"><button type="button" class="btn btn-light" data-bs-dismiss="modal">Cerrar</button></div>
+    </div>
+  </div>
+</div>

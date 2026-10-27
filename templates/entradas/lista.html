@@ -1,0 +1,83 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block titulo %}Entradas{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/entradas/lista.css' %}">
+<link rel="stylesheet" href="{% static 'css/entradas/modals/crear.css' %}">
+<link rel="stylesheet" href="{% static 'css/entradas/modals/ver.css' %}">
+<link rel="stylesheet" href="{% static 'css/entradas/modals/eliminar.css' %}">
+{% endblock %}
+{% block contenido %}
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Entradas de materiales</h1>
+    <p class="page-subtitle">Registra el ingreso de materiales y actualiza las existencias (RF-05, RF-07).</p>
+  </div>
+  <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCrear"><i class="bi bi-plus-lg me-1"></i>Nueva entrada</button>
+</div>
+
+<div class="card border-0 shadow-sm">
+  <div class="card-body">
+    <form method="get" class="row g-2 mb-3">
+      <div class="col-lg-4">
+        <div class="input-group">
+          <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+          <input type="search" name="q" value="{{ q }}" class="form-control" placeholder="Número, proveedor o documento">
+        </div>
+      </div>
+      <div class="col-lg-2 col-md-4"><input type="date" name="desde" value="{{ desde }}" class="form-control" title="Desde"></div>
+      <div class="col-lg-2 col-md-4"><input type="date" name="hasta" value="{{ hasta }}" class="form-control" title="Hasta"></div>
+      <div class="col-lg-2 col-md-4">
+        <select name="estado" class="form-select">
+          <option value="">Todas</option>
+          <option value="confirmada" {% if estado_filtro == 'confirmada' %}selected{% endif %}>Confirmadas</option>
+          <option value="anulada" {% if estado_filtro == 'anulada' %}selected{% endif %}>Anuladas</option>
+        </select>
+      </div>
+      <div class="col-lg-2 d-flex gap-2">
+        <button class="btn btn-outline-primary flex-fill" type="submit">Filtrar</button>
+        <a class="btn btn-outline-secondary" href="{% url 'entradas:lista' %}" title="Limpiar"><i class="bi bi-x-lg"></i></a>
+      </div>
+    </form>
+    <div class="table-responsive">
+      <table class="table table-hover align-middle tabla-entradas mb-0">
+        <thead><tr><th>Número</th><th>Fecha</th><th>Proveedor</th><th>Documento</th><th class="text-end">Ítems</th><th class="text-end">Total</th><th>Registró</th><th>Estado</th><th class="text-end">Acciones</th></tr></thead>
+        <tbody>
+          {% for e in entradas %}
+          <tr data-numero="{{ e.numero }}" data-fecha="{{ e.fecha|date:'d/m/Y' }}" data-proveedor="{{ e.proveedor }}"
+              data-documento="{{ e.documento }}" data-observaciones="{{ e.observaciones }}"
+              data-usuario="{{ e.usuario.get_full_name|default:e.usuario.username }}" data-estado="{{ e.get_estado_display }}"
+              data-anulada="{{ e.estado|yesno:'0,1' }}" data-total="{{ e.total|stringformat:'.2f' }}"
+              data-detalle="{{ e.detalle_json }}" data-url-anular="{% url 'entradas:anular' e.pk %}">
+            <td><code>{{ e.numero }}</code></td>
+            <td>{{ e.fecha|date:'d/m/Y' }}</td>
+            <td><strong>{{ e.proveedor }}</strong></td>
+            <td class="text-muted">{{ e.documento|default:"—" }}</td>
+            <td class="text-end">{{ e.items }}</td>
+            <td class="text-end">{{ e.total|floatformat:2 }}</td>
+            <td>{{ e.usuario.username }}</td>
+            <td>{% if e.estado == 'confirmada' %}<span class="badge text-bg-success-subtle text-success-emphasis">Confirmada</span>{% else %}<span class="badge text-bg-secondary">Anulada</span>{% endif %}</td>
+            <td class="text-end text-nowrap">
+              <button class="btn btn-sm btn-light btn-ver" title="Ver"><i class="bi bi-eye"></i></button>
+              {% if e.estado == 'confirmada' %}<button class="btn btn-sm btn-light text-danger btn-eliminar" title="Anular"><i class="bi bi-slash-circle"></i></button>{% endif %}
+            </td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="9" class="text-center text-muted py-5"><i class="bi bi-box-arrow-in-down fs-1 d-block mb-2"></i>No hay entradas registradas.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+{% include 'entradas/modals/crear.html' %}
+{% include 'entradas/modals/ver.html' %}
+{% include 'entradas/modals/eliminar.html' %}
+{% endblock %}
+{% block js %}
+<script src="{% static 'js/entradas/lista.js' %}"></script>
+<script src="{% static 'js/entradas/modals/crear.js' %}"></script>
+<script src="{% static 'js/entradas/modals/ver.js' %}"></script>
+<script src="{% static 'js/entradas/modals/eliminar.js' %}"></script>
+{% endblock %}

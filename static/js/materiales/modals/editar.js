@@ -4,7 +4,7 @@
   const campos = {
     codigo: 'editarCodigo', nombre: 'editarNombre', descripcion: 'editarDescripcion',
     categoria: 'editarCategoria', unidad: 'editarUnidad',
-    stockMinimo: 'editarStockMinimo', costo: 'editarCosto',
+    stockMinimo: 'editarStockMinimo', stockCritico: 'editarStockCritico', costoCompra: 'editarCostoCompra', precioVenta: 'editarPrecioVenta',
   };
 
   document.querySelectorAll('.btn-editar').forEach((btn) => {
@@ -20,7 +20,11 @@
   });
 
   form.addEventListener('submit', (e) => {
-    if (!form.checkValidity()) {
+    const alerta = document.getElementById('editarStockMinimo');
+    const critico = document.getElementById('editarStockCritico');
+    const invalido = parseFloat(critico.value) > parseFloat(alerta.value);
+    critico.classList.toggle('is-invalid', invalido);
+    if (invalido || !form.checkValidity()) {
       e.preventDefault();
       form.reportValidity();
     }

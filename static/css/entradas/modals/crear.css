@@ -1,0 +1,8 @@
+#modalCrear .modal-header { background: linear-gradient(135deg, #ecfdf5, #fff); }
+#modalCrear .modal-title i { color: #059669; }
+#modalCrear .form-label { font-weight: 500; font-size: .88rem; }
+#modalCrear .tabla-lineas thead th {
+  font-size: .75rem; text-transform: uppercase; letter-spacing: .05em;
+  color: #64748b; background: #f8fafc;
+}
+#modalCrear .tabla-lineas tfoot td { border-bottom: 0; font-size: 1.05rem; }

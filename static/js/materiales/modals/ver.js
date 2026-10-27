@@ -11,7 +11,12 @@
       poner('verUnidad', d.unidadDisplay);
       poner('verStock', `${d.stockActual} ${d.unidadDisplay}`);
       poner('verStockMinimo', `${d.stockMinimo} ${d.unidadDisplay}`);
-      poner('verCosto', d.costo);
+      poner('verStockCritico', `${d.stockCritico} ${d.unidadDisplay}`);
+      const niveles = { rojo: 'Crítico', amarillo: 'En alerta', verde: 'Suficiente' };
+      poner('verNivel', niveles[d.nivel]);
+      document.getElementById('verSemaforo').className = `semaforo semaforo-${d.nivel}`;
+      poner('verCostoCompra', d.costoCompra);
+      poner('verPrecioVenta', d.precioVenta);
       poner('verEstado', d.activo === '1' ? 'Activo' : 'Inactivo');
       poner('verDescripcion', d.descripcion);
       poner('verCreado', d.creado);

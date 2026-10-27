@@ -16,7 +16,9 @@ class Material(models.Model):
     unidad = models.CharField(max_length=10, choices=UNIDADES, default='unidad')
     stock_actual = models.DecimalField(max_digits=12, decimal_places=2, default=0, editable=False)
     stock_minimo = models.DecimalField(max_digits=12, decimal_places=2, default=0)
-    costo_unitario = models.DecimalField(max_digits=12, decimal_places=2, default=0)
+    stock_critico = models.DecimalField(max_digits=12, decimal_places=2, default=0)
+    costo_compra = models.DecimalField(max_digits=12, decimal_places=2, default=0)
+    precio_venta = models.DecimalField(max_digits=12, decimal_places=2, default=0)
     activo = models.BooleanField(default=True)
     creado = models.DateTimeField(auto_now_add=True)
     actualizado = models.DateTimeField(auto_now=True)
@@ -29,5 +31,11 @@ class Material(models.Model):
         return f'{self.codigo} - {self.nombre}'
 
     @property
-    def stock_bajo(self):
-        return self.stock_actual <= self.stock_minimo
+    def nivel_stock(self):
+        if self.stock_actual <= self.stock_critico:
+            return 'rojo'
+        if self.stock_actual <= self.stock_minimo:
+            return 'amarillo'
+        return 'verde'
+
+

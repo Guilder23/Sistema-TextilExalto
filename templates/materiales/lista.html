@@ -35,7 +35,9 @@
       <div class="col-lg-2 col-md-6">
         <select name="estado" class="form-select">
           <option value="">Todos</option>
-          <option value="bajo" {% if estado_filtro == 'bajo' %}selected{% endif %}>Stock bajo</option>
+          <option value="verde" {% if estado_filtro == 'verde' %}selected{% endif %}>Stock suficiente (verde)</option>
+          <option value="amarillo" {% if estado_filtro == 'amarillo' %}selected{% endif %}>Stock en alerta (amarillo)</option>
+          <option value="rojo" {% if estado_filtro == 'rojo' %}selected{% endif %}>Stock crítico (rojo)</option>
           <option value="inactivo" {% if estado_filtro == 'inactivo' %}selected{% endif %}>Inactivos</option>
         </select>
       </div>
@@ -46,22 +48,23 @@
     </form>
     <div class="table-responsive">
       <table class="table table-hover align-middle tabla-materiales mb-0">
-        <thead><tr><th>Código</th><th>Material</th><th>Categoría</th><th class="text-end">Stock</th><th class="text-end">Costo</th><th>Estado</th><th class="text-end">Acciones</th></tr></thead>
+        <thead><tr><th>Código</th><th>Material</th><th>Categoría</th><th class="text-end">Stock</th><th class="text-end">Costo compra</th><th class="text-end">Precio venta</th><th>Estado</th><th class="text-end">Acciones</th></tr></thead>
         <tbody>
           {% for m in materiales %}
           <tr data-codigo="{{ m.codigo }}" data-nombre="{{ m.nombre }}" data-descripcion="{{ m.descripcion }}"
               data-categoria="{{ m.categoria_id }}" data-categoria-nombre="{{ m.categoria.nombre }}"
               data-unidad="{{ m.unidad }}" data-unidad-display="{{ m.get_unidad_display }}"
-              data-stock-actual="{{ m.stock_actual|stringformat:'.2f' }}" data-stock-minimo="{{ m.stock_minimo|stringformat:'.2f' }}"
-              data-costo="{{ m.costo_unitario|stringformat:'.2f' }}" data-activo="{{ m.activo|yesno:'1,0' }}"
+              data-stock-actual="{{ m.stock_actual|stringformat:'.2f' }}" data-stock-minimo="{{ m.stock_minimo|stringformat:'.2f' }}" data-stock-critico="{{ m.stock_critico|stringformat:'.2f' }}" data-nivel="{{ m.nivel_stock }}"
+              data-costo-compra="{{ m.costo_compra|stringformat:'.2f' }}" data-precio-venta="{{ m.precio_venta|stringformat:'.2f' }}" data-activo="{{ m.activo|yesno:'1,0' }}"
               data-creado="{{ m.creado|date:'d/m/Y H:i' }}" data-actualizado="{{ m.actualizado|date:'d/m/Y H:i' }}"
               data-url-editar="{% url 'materiales:editar' m.pk %}" data-url-eliminar="{% url 'materiales:eliminar' m.pk %}">
             <td><code>{{ m.codigo }}</code></td>
             <td><strong>{{ m.nombre }}</strong></td>
             <td><span class="badge rounded-pill text-bg-light">{{ m.categoria.nombre }}</span></td>
             <td class="text-end text-nowrap">{{ m.stock_actual|floatformat:2 }} <small class="text-muted">{{ m.get_unidad_display }}</small>
-              {% if m.stock_bajo %}<i class="bi bi-exclamation-triangle-fill text-warning ms-1" title="Stock bajo"></i>{% endif %}</td>
-            <td class="text-end">{{ m.costo_unitario|floatformat:2 }}</td>
+              <span class="semaforo semaforo-{{ m.nivel_stock }} ms-2" title="{% if m.nivel_stock == 'rojo' %}Stock crítico{% elif m.nivel_stock == 'amarillo' %}Stock en alerta{% else %}Stock suficiente{% endif %}"></span></td>
+            <td class="text-end">{{ m.costo_compra|floatformat:2 }}</td>
+            <td class="text-end">{{ m.precio_venta|floatformat:2 }}</td>
             <td>{% if m.activo %}<span class="badge text-bg-success-subtle text-success-emphasis">Activo</span>{% else %}<span class="badge text-bg-secondary">Inactivo</span>{% endif %}</td>
             <td class="text-end text-nowrap">
               <button class="btn btn-sm btn-light btn-ver" title="Ver"><i class="bi bi-eye"></i></button>
@@ -72,7 +75,7 @@
             </td>
           </tr>
           {% empty %}
-          <tr><td colspan="7" class="text-center text-muted py-5"><i class="bi bi-box fs-1 d-block mb-2"></i>No se encontraron materiales.</td></tr>
+          <tr><td colspan="8" class="text-center text-muted py-5"><i class="bi bi-box fs-1 d-block mb-2"></i>No se encontraron materiales.</td></tr>
           {% endfor %}
         </tbody>
       </table>

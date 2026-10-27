@@ -25,8 +25,12 @@ def lista(request):
             Q(codigo__icontains=q) | Q(nombre__icontains=q) | Q(descripcion__icontains=q))
     if categoria.isdigit():
         materiales = materiales.filter(categoria_id=categoria)
-    if estado == 'bajo':
-        materiales = materiales.filter(stock_actual__lte=F('stock_minimo'))
+    if estado == 'rojo':
+        materiales = materiales.filter(stock_actual__lte=F('stock_critico'))
+    elif estado == 'amarillo':
+        materiales = materiales.filter(stock_actual__lte=F('stock_minimo'), stock_actual__gt=F('stock_critico'))
+    elif estado == 'verde':
+        materiales = materiales.filter(stock_actual__gt=F('stock_minimo')).filter(stock_actual__gt=F('stock_critico'))
     elif estado == 'inactivo':
         materiales = materiales.filter(activo=False)
     return render(request, 'materiales/lista.html', {
@@ -62,8 +66,12 @@ def _validar(datos, material=None):
         errores.append('Selecciona una categoría válida.')
     if datos.get('unidad') not in dict(Material.UNIDADES):
         errores.append('Unidad inválida.')
-    _numero(datos.get('stock_minimo', ''), 'El stock mínimo', errores)
-    _numero(datos.get('costo_unitario', ''), 'El costo unitario', errores)
+    minimo = _numero(datos.get('stock_minimo', ''), 'El stock de alerta', errores)
+    critico = _numero(datos.get('stock_critico', ''), 'El stock crítico', errores)
+    if minimo is not None and critico is not None and critico > minimo:
+        errores.append('El stock crítico no puede ser mayor que el stock de alerta.')
+    _numero(datos.get('costo_compra', ''), 'El costo de compra', errores)
+    _numero(datos.get('precio_venta', ''), 'El precio de venta', errores)
     return errores
 
 
@@ -74,7 +82,9 @@ def _asignar(material, datos):
     material.categoria_id = int(datos['categoria'])
     material.unidad = datos['unidad']
     material.stock_minimo = _numero(datos['stock_minimo'], '', [])
-    material.costo_unitario = _numero(datos['costo_unitario'], '', [])
+    material.stock_critico = _numero(datos['stock_critico'], '', [])
+    material.costo_compra = _numero(datos['costo_compra'], '', [])
+    material.precio_venta = _numero(datos['precio_venta'], '', [])
     material.activo = datos.get('activo') == 'on'
 
 
@@ -116,3 +126,4 @@ def eliminar(request, pk):
     except ProtectedError:
         messages.error(request, 'No se puede eliminar: tiene movimientos asociados. Desactívalo en su lugar.')
     return redirect('materiales:lista')
+

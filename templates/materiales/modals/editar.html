@@ -16,8 +16,10 @@
             </select></div>
           <div class="col-md-6"><label class="form-label" for="editarUnidad">Unidad de medida *</label>
             <select class="form-select" id="editarUnidad" name="unidad" required>{% for v, e in unidades %}<option value="{{ v }}">{{ e }}</option>{% endfor %}</select></div>
-          <div class="col-md-6"><label class="form-label" for="editarStockMinimo">Stock mínimo</label><input type="number" step="0.01" min="0" class="form-control" id="editarStockMinimo" name="stock_minimo"></div>
-          <div class="col-md-6"><label class="form-label" for="editarCosto">Costo unitario</label><input type="number" step="0.01" min="0" class="form-control" id="editarCosto" name="costo_unitario"></div>
+          <div class="col-md-6"><label class="form-label" for="editarStockMinimo">Stock de alerta (amarillo)</label><input type="number" step="0.01" min="0" class="form-control" id="editarStockMinimo" name="stock_minimo"><div class="form-text">Amarillo cuando el stock sea menor o igual a este valor.</div></div>
+          <div class="col-md-6"><label class="form-label" for="editarStockCritico">Stock crítico (rojo)</label><input type="number" step="0.01" min="0" class="form-control" id="editarStockCritico" name="stock_critico"><div class="invalid-feedback">No puede ser mayor que el stock de alerta.</div><div class="form-text">Rojo cuando el stock sea menor o igual a este valor.</div></div>
+          <div class="col-md-6"><label class="form-label" for="editarCostoCompra">Costo de compra</label><input type="number" step="0.01" min="0" class="form-control" id="editarCostoCompra" name="costo_compra"></div>
+          <div class="col-md-6"><label class="form-label" for="editarPrecioVenta">Precio de venta</label><input type="number" step="0.01" min="0" class="form-control" id="editarPrecioVenta" name="precio_venta"></div>
           <div class="col-12"><label class="form-label" for="editarDescripcion">Descripción</label><textarea class="form-control" id="editarDescripcion" name="descripcion" rows="2"></textarea></div>
           <div class="col-12"><div class="form-check form-switch"><input class="form-check-input" type="checkbox" id="editarActivo" name="activo"><label class="form-check-label" for="editarActivo">Material activo</label></div></div>
         </div>
