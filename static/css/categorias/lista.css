@@ -4,3 +4,10 @@
 }
 .tabla-categorias .btn-light { background: transparent; border-color: transparent; }
 .tabla-categorias .btn-light:hover { background: #eef2ff; }
+
+.card { background: #fff; border-color: var(--palette-border); color: var(--text-main); }
+.tabla-categorias thead th { background: #e7eef2; color: var(--palette-blue); border-color: var(--palette-border); }
+.tabla-categorias .btn-light { color: var(--palette-blue); background: #e7eef2; border-color: var(--palette-border); }
+.form-control, .form-select { border-color: var(--palette-border); color: var(--text-main); }
+.pagination .page-link { color: var(--brand-dark); border-color: var(--palette-border); }
+.pagination .page-item.active .page-link { color: #fff; background: var(--brand); border-color: var(--brand); }

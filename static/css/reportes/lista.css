@@ -7,3 +7,9 @@
 .nivel-rojo { color: #991b1b; background: #fee2e2; }.nivel-inactivo { color: #475569; background: #e2e8f0; }
 .metric-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: .85rem 1rem; }
 .metric-card span { display: block; color: #64748b; font-size: .8rem; }.metric-card strong { color: var(--brand); font-size: 1.35rem; }
+
+.card { background: #fff; border-color: var(--palette-border); color: var(--text-main); }
+.reporte-table thead th { background: #e7eef2; color: var(--palette-blue); border-color: var(--palette-border); }
+.report-tabs .nav-link { color: var(--text-muted); }
+.report-tabs .nav-link.active { background: var(--brand); color: #fff; }
+.metric-card { background: #f1f4f6; border-color: var(--palette-border); }

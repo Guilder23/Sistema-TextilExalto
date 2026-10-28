@@ -13,3 +13,6 @@
 .badge-rol-vendedor { background: #dcfce7; color: #15803d; }
 .tabla-usuarios .btn-light { background: transparent; border-color: transparent; }
 .tabla-usuarios .btn-light:hover { background: #eef2ff; }
+.card { background: #fff; border-color: var(--palette-border); color: var(--text-main); }
+.table thead th { background: #e7eef2; color: var(--palette-blue); border-color: var(--palette-border); }
+.form-control, .form-select { border-color: var(--palette-border); color: var(--text-main); }

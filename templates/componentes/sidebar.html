@@ -1,17 +1,17 @@
 ﻿<aside class="app-sidebar" id="appSidebar">
   <div class="sidebar-section">Principal</div>
-  <a class="sidebar-link {% if request.resolver_match.url_name == 'inicio' %}active{% endif %}" href="{% url 'usuarios:inicio' %}"><i class="bi bi-speedometer2"></i><span>Inicio</span></a>
+  <a class="sidebar-link {% if request.resolver_match.url_name == 'inicio' %}active{% endif %}" aria-label="Inicio" href="{% url 'usuarios:inicio' %}"><i class="bi bi-speedometer2"></i><span>Inicio</span></a>
 
   <div class="sidebar-section">Inventario</div>
-  <a class="sidebar-link {% if request.resolver_match.app_name == 'materiales' %}active{% endif %}" href="{% url 'materiales:lista' %}"><i class="bi bi-box"></i><span>Materiales</span></a>
-  <a class="sidebar-link {% if request.resolver_match.app_name == 'categorias' %}active{% endif %}" href="{% url 'categorias:lista' %}"><i class="bi bi-tags"></i><span>Categorías</span></a>
-  {% if user.es_admin %}<a class="sidebar-link {% if request.resolver_match.app_name == 'entradas' %}active{% endif %}" href="{% url 'entradas:lista' %}"><i class="bi bi-box-arrow-in-down"></i><span>Entradas</span></a>{% else %}<a class="sidebar-link disabled" href="#"><i class="bi bi-box-arrow-in-down"></i><span>Entradas</span></a>{% endif %}
-  <a class="sidebar-link {% if request.resolver_match.app_name == 'salidas' %}active{% endif %}" href="{% url 'salidas:lista' %}"><i class="bi bi-cart-check"></i><span>Salidas / Ventas</span></a>
-  <a class="sidebar-link {% if request.resolver_match.app_name == 'historial' %}active{% endif %}" href="{% url 'historial:lista' %}"><i class="bi bi-clock-history"></i><span>Historial</span></a>
-  <a class="sidebar-link {% if request.resolver_match.app_name == 'reportes' %}active{% endif %}" href="{% url 'reportes:lista' %}"><i class="bi bi-file-earmark-bar-graph"></i><span>Reportes</span></a>
+  <a class="sidebar-link {% if request.resolver_match.app_name == 'materiales' %}active{% endif %}" aria-label="Materiales" href="{% url 'materiales:lista' %}"><i class="bi bi-box"></i><span>Materiales</span></a>
+  <a class="sidebar-link {% if request.resolver_match.app_name == 'categorias' %}active{% endif %}" aria-label="Categorías" href="{% url 'categorias:lista' %}"><i class="bi bi-tags"></i><span>Categorías</span></a>
+  {% if user.es_admin %}<a class="sidebar-link {% if request.resolver_match.app_name == 'entradas' %}active{% endif %}" aria-label="Entradas" href="{% url 'entradas:lista' %}"><i class="bi bi-box-arrow-in-down"></i><span>Entradas</span></a>{% else %}<a class="sidebar-link disabled" aria-label="Entradas" href="#"><i class="bi bi-box-arrow-in-down"></i><span>Entradas</span></a>{% endif %}
+  <a class="sidebar-link {% if request.resolver_match.app_name == 'salidas' %}active{% endif %}" aria-label="Salidas / Ventas" href="{% url 'salidas:lista' %}"><i class="bi bi-cart-check"></i><span>Salidas / Ventas</span></a>
+  <a class="sidebar-link {% if request.resolver_match.app_name == 'historial' %}active{% endif %}" aria-label="Historial" href="{% url 'historial:lista' %}"><i class="bi bi-clock-history"></i><span>Historial</span></a>
+  <a class="sidebar-link {% if request.resolver_match.app_name == 'reportes' %}active{% endif %}" aria-label="Reportes" href="{% url 'reportes:lista' %}"><i class="bi bi-file-earmark-bar-graph"></i><span>Reportes</span></a>
 
   {% if user.es_admin %}
   <div class="sidebar-section">Administración</div>
-  <a class="sidebar-link {% if request.resolver_match.url_name == 'lista' %}active{% endif %}" href="{% url 'usuarios:lista' %}"><i class="bi bi-people"></i><span>Usuarios</span></a>
+  <a class="sidebar-link {% if request.resolver_match.url_name == 'lista' %}active{% endif %}" aria-label="Usuarios" href="{% url 'usuarios:lista' %}"><i class="bi bi-people"></i><span>Usuarios</span></a>
   {% endif %}
 </aside>

@@ -2,7 +2,9 @@
 <nav class="app-navbar navbar">
   <div class="container-fluid px-3">
     <div class="d-flex align-items-center gap-2">
-      <button class="btn btn-icon d-lg-none" id="btnSidebar" type="button" aria-label="Menú"><i class="bi bi-list fs-4"></i></button>
+      <button class="btn btn-icon sidebar-toggle" id="btnSidebar" type="button" aria-label="Contraer menú" aria-expanded="true">
+        <i class="bi bi-layout-sidebar-inset"></i>
+      </button>
       <a class="navbar-brand d-flex align-items-center gap-2 m-0" href="{% url 'usuarios:inicio' %}">
         <span class="brand-logo"><i class="bi bi-box-seam"></i></span>
         <span class="brand-text">Textil <strong>Exalto</strong></span>

@@ -5,3 +5,5 @@
   border-top: 1px solid #e2e8f0;
   font-size: .85rem; color: #475569;
 }
+
+.app-footer { background: #fff; border-top-color: var(--palette-border); color: var(--text-muted); }

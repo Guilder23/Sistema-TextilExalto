@@ -24,3 +24,13 @@
 .log-eliminar .log-nivel, .log-anular .log-nivel, .log-login_fallido .log-nivel { color: #f87171; }
 .log-logout .log-nivel { color: #94a3b8; }
 .log-vacio { padding: 2rem; text-align: center; color: #64748b; }
+
+.card { background: #fff; border-color: var(--palette-border); color: var(--text-main); }
+.tabla-historial thead th { background: #e7eef2; color: var(--palette-blue); border-color: var(--palette-border); }
+.tabla-historial code { color: var(--palette-blue); background: #d9e4e9; }
+.tabla-historial .btn-light { color: var(--palette-blue); background: #e7eef2; border-color: var(--palette-border); }
+.nav-pills .nav-link { color: var(--brand-dark); }
+.nav-pills .nav-link.active { background: var(--brand); color: #fff; }
+.text-primary, .text-primary-emphasis { color: var(--brand-dark) !important; }
+.text-bg-primary, .text-bg-primary-subtle { color: #fff !important; background-color: var(--brand) !important; }
+.input-group-text { color: var(--brand-dark); border-color: var(--palette-border); }

@@ -16,3 +16,8 @@
 .tabla-materiales tr:has(.semaforo-rojo) td:first-child { box-shadow: inset 3px 0 0 #ef4444; }
 .tabla-materiales tr:has(.semaforo-amarillo) td:first-child { box-shadow: inset 3px 0 0 #facc15; }
 .tabla-materiales tr:has(.semaforo-verde) td:first-child { box-shadow: inset 3px 0 0 #22c55e; }
+
+.card { background: #fff; border-color: var(--palette-border); color: var(--text-main); }
+.tabla-materiales thead th { background: #e7eef2; color: var(--palette-blue); border-color: var(--palette-border); }
+.tabla-materiales .btn-light { color: var(--palette-blue); background: #e7eef2; border-color: var(--palette-border); }
+.form-control, .form-select { border-color: var(--palette-border); color: var(--text-main); }
