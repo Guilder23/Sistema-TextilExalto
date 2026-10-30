@@ -5,6 +5,11 @@
   document.querySelectorAll('.btn-ver').forEach((btn) => {
     btn.addEventListener('click', () => {
       const d = window.filaDeBoton(btn).dataset;
+      const imagen = document.getElementById('verImagen');
+      const sinImagen = document.getElementById('verSinImagen');
+      imagen.src = d.imagen || '';
+      imagen.classList.toggle('d-none', !d.imagen);
+      sinImagen.classList.toggle('d-none', !!d.imagen);
       poner('verNombre', d.nombre);
       poner('verCodigo', d.codigo);
       poner('verCategoria', d.categoriaNombre);

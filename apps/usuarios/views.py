@@ -5,7 +5,7 @@ from django.contrib import messages
 from apps.historial.utils import registrar
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.password_validation import validate_password
-from django.core.exceptions import PermissionDenied, ValidationError
+from django.core.exceptions import ValidationError
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
@@ -18,7 +18,8 @@ def solo_admin(view):
     @login_required
     def envoltura(request, *args, **kwargs):
         if not request.user.es_admin:
-            raise PermissionDenied
+            messages.warning(request, 'Esta sección solo está disponible para administradores.')
+            return redirect('usuarios:inicio')
         return view(request, *args, **kwargs)
     return envoltura
 

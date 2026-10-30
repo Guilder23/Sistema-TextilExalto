@@ -5,6 +5,10 @@
 .tabla-materiales code { color: var(--brand); background: #eef2ff; padding: .15rem .4rem; border-radius: 6px; }
 .tabla-materiales .btn-light { background: transparent; border-color: transparent; }
 .tabla-materiales .btn-light:hover { background: #eef2ff; }
+.material-imagen-tabla, .material-imagen-vacia {
+  width: 42px; height: 42px; border-radius: 8px; object-fit: cover; display: inline-flex;
+  align-items: center; justify-content: center; background: #eef2f7; color: #94a3b8;
+}
 
 .semaforo {
   display: inline-block; width: 12px; height: 12px; border-radius: 50%;

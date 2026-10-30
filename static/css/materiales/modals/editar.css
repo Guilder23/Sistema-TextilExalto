@@ -1,3 +1,5 @@
 #modalEditar .modal-header { background: linear-gradient(135deg, #fffbeb, #fff); }
 #modalEditar .modal-title i { color: #d97706; }
 #modalEditar .form-label { font-weight: 500; font-size: .88rem; }
+.material-imagen-contenedor { min-height: 96px; display: flex; align-items: center; }
+.material-imagen-forma { width: 96px; height: 96px; object-fit: cover; border-radius: 8px; }

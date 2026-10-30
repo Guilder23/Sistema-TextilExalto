@@ -95,6 +95,10 @@ def _guardar(request, material, mensaje):
     if not errores:
         try:
             _asignar(material, request.POST)
+            if request.FILES.get('imagen'):
+                material.imagen = request.FILES['imagen']
+            elif request.POST.get('imagen-clear') == 'on':
+                material.imagen = ''
             material.save()
         except IntegrityError:
             errores.append('Ya existe un material con ese código.')
@@ -131,4 +135,3 @@ def eliminar(request, pk):
     except ProtectedError:
         messages.error(request, 'No se puede eliminar: tiene movimientos asociados. Desactívalo en su lugar.')
     return redirect('materiales:lista')
-

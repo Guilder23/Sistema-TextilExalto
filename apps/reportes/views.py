@@ -2,7 +2,6 @@ from datetime import date
 from decimal import Decimal
 from io import BytesIO
 
-from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.db.models import Q
 from django.http import HttpResponse
@@ -16,6 +15,7 @@ from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer, Table, Tabl
 
 from apps.materiales.models import Material
 from apps.salidas.models import Salida
+from apps.usuarios.views import solo_admin
 
 
 def _fecha(value):
@@ -63,7 +63,7 @@ def _filtros_materiales(request):
     return materiales, {'q': q, 'nivel': nivel, 'activo': activo}
 
 
-@login_required
+@solo_admin
 def lista(request):
     pestaña = request.GET.get('tab', 'materiales')
     if pestaña not in ('materiales', 'ventas'):
@@ -127,7 +127,7 @@ def _pdf_base(title, subtitle):
     return buffer, document, story, styles, draw_template
 
 
-@login_required
+@solo_admin
 def pdf_materiales(request):
     materiales, filtros = _filtros_materiales(request)
     rows = [['Código', 'Material', 'Categoría', 'Unidad', 'Stock', 'Alerta', 'Costo compra', 'Precio venta', 'Valor stock', 'Estado']]
@@ -155,7 +155,7 @@ def pdf_materiales(request):
     return _pdf_response(buffer, 'reporte-materiales.pdf')
 
 
-@login_required
+@solo_admin
 def pdf_ventas(request):
     ventas, filtros = _filtros_ventas(request)
     rows = [['Número', 'Fecha', 'Cliente', 'Vendedor', 'Pago', 'Ítems', 'Subtotal', 'Descuento', 'Total', 'Estado']]

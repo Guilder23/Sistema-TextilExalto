@@ -1,4 +1,8 @@
 #modalVer .modal-title i { color: var(--brand); }
-#modalVer .ver-nombre { font-weight: 600; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid #eef2f7; }
-#modalVer .ver-datos dt { color: #64748b; font-weight: 500; }
-#modalVer .ver-datos dd { margin-bottom: .6rem; }
+#modalVer .modal-header { background: linear-gradient(135deg, #eef2ff, #fff); }
+#modalVer .form-label { font-weight: 500; font-size: .88rem; }
+#modalVer .modal-body > .row { --bs-gutter-y: .75rem; }
+#modalVer .ver-valor { min-height: 1.25rem; line-height: 1.25; color: var(--text-main); }
+#modalVer .ver-descripcion { min-height: 2.5rem; white-space: pre-wrap; }
+#modalVer .material-imagen-contenedor { min-height: 96px; display: flex; align-items: center; }
+#modalVer .material-imagen-forma { width: 140px; height: 140px; object-fit: cover; border-radius: 8px; }

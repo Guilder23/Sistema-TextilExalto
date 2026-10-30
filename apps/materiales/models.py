@@ -11,6 +11,7 @@ class Material(models.Model):
 
     codigo = models.CharField(max_length=30, unique=True)
     nombre = models.CharField(max_length=150)
+    imagen = models.ImageField(upload_to='materiales/', blank=True)
     descripcion = models.TextField(blank=True)
     categoria = models.ForeignKey(Categoria, on_delete=models.PROTECT, related_name='materiales')
     unidad = models.CharField(max_length=10, choices=UNIDADES, default='unidad')
@@ -37,5 +38,4 @@ class Material(models.Model):
         if self.stock_actual <= self.stock_minimo:
             return 'amarillo'
         return 'verde'
-
 

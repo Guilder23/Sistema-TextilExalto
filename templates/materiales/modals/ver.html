@@ -1,27 +1,26 @@
 <div class="modal fade" id="modalVer" tabindex="-1" aria-labelledby="modalVerLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="modalVerLabel"><i class="bi bi-box-seam me-2"></i>Detalle de material</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
       <div class="modal-body">
-        <h4 class="ver-nombre" id="verNombre"></h4>
-        <dl class="row ver-datos mb-0">
-          <dt class="col-sm-5">Código</dt><dd class="col-sm-7" id="verCodigo"></dd>
-          <dt class="col-sm-5">Categoría</dt><dd class="col-sm-7" id="verCategoria"></dd>
-          <dt class="col-sm-5">Unidad</dt><dd class="col-sm-7" id="verUnidad"></dd>
-          <dt class="col-sm-5">Stock actual</dt><dd class="col-sm-7" id="verStock"></dd>
-          <dt class="col-sm-5">Nivel de stock</dt><dd class="col-sm-7"><span class="semaforo" id="verSemaforo"></span> <span id="verNivel"></span></dd>
-          <dt class="col-sm-5">Stock de alerta</dt><dd class="col-sm-7" id="verStockMinimo"></dd>
-          <dt class="col-sm-5">Stock crítico</dt><dd class="col-sm-7" id="verStockCritico"></dd>
-          <dt class="col-sm-5">Costo de compra</dt><dd class="col-sm-7" id="verCostoCompra"></dd>
-          <dt class="col-sm-5">Precio de venta</dt><dd class="col-sm-7" id="verPrecioVenta"></dd>
-          <dt class="col-sm-5">Estado</dt><dd class="col-sm-7" id="verEstado"></dd>
-          <dt class="col-sm-5">Descripción</dt><dd class="col-sm-7" id="verDescripcion"></dd>
-          <dt class="col-sm-5">Registrado</dt><dd class="col-sm-7" id="verCreado"></dd>
-          <dt class="col-sm-5">Actualizado</dt><dd class="col-sm-7" id="verActualizado"></dd>
-        </dl>
+        <div class="row g-3">
+          <div class="col-md-4"><label class="form-label">Código</label><div class="ver-valor" id="verCodigo"></div></div>
+          <div class="col-md-8"><label class="form-label">Nombre</label><div class="ver-valor" id="verNombre"></div></div>
+          <div class="col-md-6"><label class="form-label">Categoría</label><div class="ver-valor" id="verCategoria"></div></div>
+          <div class="col-md-6"><label class="form-label">Unidad de medida</label><div class="ver-valor" id="verUnidad"></div></div>
+          <div class="col-md-6"><label class="form-label">Stock actual</label><div class="ver-valor" id="verStock"></div></div>
+          <div class="col-md-6"><label class="form-label">Nivel de stock</label><div class="ver-valor"><span class="semaforo" id="verSemaforo"></span> <span id="verNivel"></span></div></div>
+          <div class="col-md-6"><label class="form-label">Stock de alerta</label><div class="ver-valor" id="verStockMinimo"></div></div>
+          <div class="col-md-6"><label class="form-label">Stock crítico</label><div class="ver-valor" id="verStockCritico"></div></div>
+          <div class="col-md-6"><label class="form-label">Costo de compra</label><div class="ver-valor" id="verCostoCompra"></div></div>
+          <div class="col-md-6"><label class="form-label">Precio de venta</label><div class="ver-valor" id="verPrecioVenta"></div></div>
+          <div class="col-12"><label class="form-label">Descripción</label><div class="ver-valor ver-descripcion" id="verDescripcion"></div></div>
+          <div class="col-md-6"><label class="form-label">Imagen</label><div class="material-imagen-contenedor"><span id="verSinImagen" class="text-muted small">Este material no tiene imagen.</span><img id="verImagen" class="material-imagen-forma d-none" alt="Imagen del material"></div></div>
+          <div class="col-md-6"><label class="form-label">Estado</label><div class="ver-valor" id="verEstado"></div><label class="form-label mt-3">Registrado</label><div class="ver-valor" id="verCreado"></div><label class="form-label mt-3">Actualizado</label><div class="ver-valor" id="verActualizado"></div></div>
+        </div>
       </div>
       <div class="modal-footer"><button type="button" class="btn btn-light" data-bs-dismiss="modal">Cerrar</button></div>
     </div>

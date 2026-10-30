@@ -10,5 +10,25 @@
       form.reportValidity();
     }
   });
-  document.getElementById('modalCrear').addEventListener('hidden.bs.modal', () => form.reset());
+  document.getElementById('modalCrear').addEventListener('hidden.bs.modal', () => {
+    form.reset();
+    vista.src = '';
+    vista.classList.add('d-none');
+    document.getElementById('crearImagenSinVista').classList.remove('d-none');
+  });
+  const imagen = document.getElementById('crearImagen');
+  const vista = document.getElementById('crearImagenVista');
+  const sinVista = document.getElementById('crearImagenSinVista');
+  imagen.addEventListener('change', () => {
+    const archivo = imagen.files[0];
+    if (!archivo) {
+      vista.src = '';
+      vista.classList.add('d-none');
+      sinVista.classList.remove('d-none');
+      return;
+    }
+    vista.src = URL.createObjectURL(archivo);
+    vista.classList.remove('d-none');
+    sinVista.classList.add('d-none');
+  });
 })();

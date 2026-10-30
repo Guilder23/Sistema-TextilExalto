@@ -48,16 +48,20 @@
     </form>
     <div class="table-responsive">
       <table class="table table-hover align-middle tabla-materiales mb-0">
-        <thead><tr><th>Código</th><th>Material</th><th>Categoría</th><th class="text-end">Stock</th><th class="text-end">Costo compra</th><th class="text-end">Precio venta</th><th>Estado</th><th class="text-end">Acciones</th></tr></thead>
+        <thead><tr><th>Imagen</th><th>Código</th><th>Material</th><th>Categoría</th><th class="text-end">Stock</th><th class="text-end">Costo compra</th><th class="text-end">Precio venta</th><th>Estado</th><th class="text-end">Acciones</th></tr></thead>
         <tbody>
           {% for m in materiales %}
-          <tr data-codigo="{{ m.codigo }}" data-nombre="{{ m.nombre }}" data-descripcion="{{ m.descripcion }}"
+          <tr data-imagen="{% if m.imagen %}{{ m.imagen.url }}{% endif %}" data-codigo="{{ m.codigo }}" data-nombre="{{ m.nombre }}" data-descripcion="{{ m.descripcion }}"
               data-categoria="{{ m.categoria_id }}" data-categoria-nombre="{{ m.categoria.nombre }}"
               data-unidad="{{ m.unidad }}" data-unidad-display="{{ m.get_unidad_display }}"
               data-stock-actual="{{ m.stock_actual|stringformat:'.2f' }}" data-stock-minimo="{{ m.stock_minimo|stringformat:'.2f' }}" data-stock-critico="{{ m.stock_critico|stringformat:'.2f' }}" data-nivel="{{ m.nivel_stock }}"
               data-costo-compra="{{ m.costo_compra|stringformat:'.2f' }}" data-precio-venta="{{ m.precio_venta|stringformat:'.2f' }}" data-activo="{{ m.activo|yesno:'1,0' }}"
               data-creado="{{ m.creado|date:'d/m/Y H:i' }}" data-actualizado="{{ m.actualizado|date:'d/m/Y H:i' }}"
               data-url-editar="{% url 'materiales:editar' m.pk %}" data-url-eliminar="{% url 'materiales:eliminar' m.pk %}">
+            <td>
+              {% if m.imagen %}<img src="{{ m.imagen.url }}" alt="Imagen de {{ m.nombre }}" class="material-imagen-tabla">
+              {% else %}<span class="material-imagen-vacia"><i class="bi bi-image"></i></span>{% endif %}
+            </td>
             <td><code>{{ m.codigo }}</code></td>
             <td><strong>{{ m.nombre }}</strong></td>
             <td><span class="badge rounded-pill text-bg-light">{{ m.categoria.nombre }}</span></td>
@@ -75,7 +79,7 @@
             </td>
           </tr>
           {% empty %}
-          <tr><td colspan="8" class="text-center text-muted py-5"><i class="bi bi-box fs-1 d-block mb-2"></i>No se encontraron materiales.</td></tr>
+          <tr><td colspan="9" class="text-center text-muted py-5"><i class="bi bi-box fs-1 d-block mb-2"></i>No se encontraron materiales.</td></tr>
           {% endfor %}
         </tbody>
       </table>
