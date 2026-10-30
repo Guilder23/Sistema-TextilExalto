@@ -3,13 +3,15 @@ from decimal import Decimal
 from io import BytesIO
 
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
 from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render
 from reportlab.lib import colors
-from reportlab.lib.pagesizes import A4, landscape
+from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.units import mm
+from reportlab.lib.utils import ImageReader
 from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle
 
 from apps.materiales.models import Material
@@ -100,12 +102,29 @@ def _pdf_response(buffer, filename):
 
 def _pdf_base(title, subtitle):
     buffer = BytesIO()
-    document = SimpleDocTemplate(buffer, pagesize=landscape(A4), rightMargin=12 * mm,
-                                 leftMargin=12 * mm, topMargin=12 * mm, bottomMargin=12 * mm)
+    document = SimpleDocTemplate(buffer, pagesize=A4, rightMargin=18 * mm,
+                                 leftMargin=18 * mm, topMargin=66 * mm, bottomMargin=38 * mm)
     styles = getSampleStyleSheet()
-    story = [Paragraph('TEXTIL EXALTO', styles['Title']), Paragraph(title, styles['Heading2']),
-             Paragraph(subtitle, styles['Normal']), Spacer(1, 8 * mm)]
-    return buffer, document, story, styles
+    styles['Title'].textColor = colors.HexColor('#0d4566')
+    styles['Heading2'].textColor = colors.HexColor('#155d85')
+    styles['Normal'].textColor = colors.HexColor('#173449')
+    story = [Paragraph(title, styles['Heading2']), Paragraph(subtitle, styles['Normal']),
+             Spacer(1, 8 * mm)]
+
+    template = settings.MEDIA_ROOT / 'DiseñoPdf.png'
+
+    def draw_template(canvas, _document):
+        canvas.saveState()
+        canvas.drawImage(ImageReader(str(template)), 0, 0, width=A4[0], height=A4[1],
+                         preserveAspectRatio=False, mask='auto')
+        canvas.setFillColor(colors.white)
+        canvas.setFont('Helvetica-Bold', 17)
+        canvas.drawString(22 * mm, A4[1] - 25 * mm, 'TEXTIL EXALTO')
+        canvas.setFont('Helvetica', 9)
+        canvas.drawString(22 * mm, A4[1] - 31 * mm, 'Sistema de inventario')
+        canvas.restoreState()
+
+    return buffer, document, story, styles, draw_template
 
 
 @login_required
@@ -120,17 +139,19 @@ def pdf_materiales(request):
                      f'{material.stock_actual:.2f}', f'{material.stock_minimo:.2f} / {material.stock_critico:.2f}',
                      f'{material.costo_compra:.2f}', f'{material.precio_venta:.2f}',
                      f'{material.stock_actual * material.costo_compra:.2f}', nivel])
-    buffer, document, story, styles = _pdf_base('Reporte de materiales',
+    buffer, document, story, styles, draw_template = _pdf_base('Reporte de materiales',
         f'Generado el {date.today():%d/%m/%Y} · Filtros aplicados: {filtros["q"] or "ninguno"}')
-    table = Table(rows, repeatRows=1)
+    table = Table(rows, repeatRows=1,
+                  colWidths=[14 * mm, 23 * mm, 20 * mm, 12 * mm, 12 * mm,
+                             20 * mm, 16 * mm, 16 * mm, 17 * mm, 14 * mm])
     table.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#4f46e5')), ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
+        ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#0d4566')), ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
         ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'), ('FONTSIZE', (0, 0), (-1, -1), 8),
-        ('GRID', (0, 0), (-1, -1), .25, colors.HexColor('#cbd5e1')), ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-        ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, colors.HexColor('#f8fafc')]),
+        ('GRID', (0, 0), (-1, -1), .25, colors.HexColor('#b6c8d2')), ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+        ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, colors.HexColor('#f1f4f6')]),
     ]))
     story.append(table)
-    document.build(story)
+    document.build(story, onFirstPage=draw_template, onLaterPages=draw_template)
     return _pdf_response(buffer, 'reporte-materiales.pdf')
 
 
@@ -145,16 +166,18 @@ def pdf_ventas(request):
                      venta.get_metodo_pago_display(), str(venta.detalles.count()), f'{venta.subtotal:.2f}',
                      f'{venta.descuento:.2f}', f'{venta.total:.2f}', venta.get_estado_display()])
     rows.append(['', '', '', '', '', '', '', 'TOTAL CONFIRMADO', f'{total:.2f}', ''])
-    buffer, document, story, styles = _pdf_base('Reporte de salidas / ventas',
+    buffer, document, story, styles, draw_template = _pdf_base('Reporte de salidas / ventas',
         f'Generado el {date.today():%d/%m/%Y} · Usuario: {request.user.username} · Registros: {len(rows) - 2}')
-    table = Table(rows, repeatRows=1)
+    table = Table(rows, repeatRows=1,
+                  colWidths=[16 * mm, 14 * mm, 24 * mm, 19 * mm, 15 * mm,
+                             11 * mm, 17 * mm, 17 * mm, 17 * mm, 14 * mm])
     table.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#4f46e5')), ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
+        ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#0d4566')), ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
         ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'), ('FONTSIZE', (0, 0), (-1, -1), 8),
-        ('GRID', (0, 0), (-1, -1), .25, colors.HexColor('#cbd5e1')), ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-        ('ROWBACKGROUNDS', (0, 1), (-1, -2), [colors.white, colors.HexColor('#f8fafc')]),
-        ('FONTNAME', (7, -1), (8, -1), 'Helvetica-Bold'), ('BACKGROUND', (7, -1), (8, -1), colors.HexColor('#e0e7ff')),
+        ('GRID', (0, 0), (-1, -1), .25, colors.HexColor('#b6c8d2')), ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+        ('ROWBACKGROUNDS', (0, 1), (-1, -2), [colors.white, colors.HexColor('#f1f4f6')]),
+        ('FONTNAME', (7, -1), (8, -1), 'Helvetica-Bold'), ('BACKGROUND', (7, -1), (8, -1), colors.HexColor('#d9e4e9')),
     ]))
     story.append(table)
-    document.build(story)
+    document.build(story, onFirstPage=draw_template, onLaterPages=draw_template)
     return _pdf_response(buffer, 'reporte-salidas-ventas.pdf')
