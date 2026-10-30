@@ -18,9 +18,9 @@ services:
           name: sistema-textilexalto-db
           property: connectionString
       - key: DJANGO_ALLOWED_HOSTS
-        value: ".onrender.com"
+        value: "sistema-textilexalto.onrender.com,.onrender.com"
       - key: CSRF_TRUSTED_ORIGINS
-        value: "https://*.onrender.com"
+        value: "https://sistema-textilexalto.onrender.com,https://*.onrender.com"
 databases:
   - name: sistema-textilexalto-db
     plan: free
