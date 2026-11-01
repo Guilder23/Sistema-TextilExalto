@@ -20,7 +20,7 @@ db.sqlite3
 db.sqlite3-journal
 *.log
 staticfiles/
-static/media/*
+# static/media/*
 !static/media/.gitkeep
 
 # IDE / SO
